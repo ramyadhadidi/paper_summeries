@@ -1,4 +1,4 @@
-### Warp Level Divergence: Characterization, Impact, and Mitigation: Loc(6.4 (RF File))
+### Warp Level Divergence: Characterization, Impact, and Mitigation:
   - Problem: 
   With a TB-level resource management scheme, all the
   resource required by a TB is allocated/released when it is dispatched to / finished in a streaming
@@ -12,4 +12,12 @@
   dispatched to an SM as long as it has sufficient resource for a warp rather than a TB. Furthermore, whenever a warp is completed, its resource is released
   and can accommodate a new warp. 
 
-
+### Dynamic Warp Formation: Efficient MIMD Control Flow on SIMD Graphics Hardware
+  - Problem: underutilization at warp level for threads. So, group threads sooner than PDOM
+  - Solution DWF: Dynamically form warps rather than statically based on PDOM reconverge stack
+    - should have more than one divergent warp for thread block
+    - can merge to warps if:
+      - same next PC
+      - and have compliments active threads
+    - this will change register file access, because each register should be accessible from all lanes.
+      - traditionally we have multi-banked register files: When threads are grouped into warps "statically", each thread’s registers are at the same "offset" within the lane, thus requiring only a single decoder. For DWF we need to have separate decoder for each RF.
