@@ -12,7 +12,7 @@
   dispatched to an SM as long as it has sufficient resource for a warp rather than a TB.
   Furthermore, whenever a warp is completed, its resource is released and can accommodate a new warp. 
 
-### [Dynamic Warp Formation: Efficient MIMD Control Flow on SIMD Graphics Hardware](https://www.ece.ubc.ca/~aamodt/papers/wwlfung.micro2007.pdf)
+### [Dynamic Warp Formation: Efficient MIMD Control Flow on SIMD Graphics Hardware](https://www.ece.ubc.ca/~aamodt/papers/wwlfung.micro2007.pdf) **DWF**
   - Problem: underutilization at warp level for threads. So, group threads sooner than PDOM
   - Solution DWF: Dynamically form warps rather than statically based on PDOM reconverge stack
     - should have more than one divergent warp for thread block
@@ -24,8 +24,7 @@
       each thread’s registers are at the same "offset" within the lane, thus requiring only a single decoder. 
       For DWF we need to have separate decoder for each RF.
 
-### [Thread Block Compaction for Efficient SIMT Control Flow](https://www.ece.ubc.ca/~aamodt/papers/wwlfung.hpca2011.pdf)
-
+### [Thread Block Compaction for Efficient SIMT Control Flow](https://www.ece.ubc.ca/~aamodt/papers/wwlfung.hpca2011.pdf) **TBC**
   - Problem: the benefits of DWF can be affected by the scheduling
     policy used to issue ready warps and memory
     systems that limit bandwidth to first level memory structures.
@@ -50,4 +49,25 @@
     - on divergence insert Likely reconverge point as well with zero active threads
       - for each stack access check if PC=LPC, then insert that stack active thread mask to LPos entry
     - study (Fig10)
-    - benefit: smaller stack size + small speedup 
+    - benefit: smaller stack size + small speedup
+
+### [Maximizing SIMD Resource Utilization in GPGPUs with SIMD Lane Permutation] (https://dl.acm.org/citation.cfm?id=2485953) **SLP**
+  - current GPUs statically assign a fixed SIMD lane to each thread based on its thread-ID in a sequential manner.
+  - *aligned divergence* originates from a branch whose condition is dependent only on programmatic values (e.g., CTA-/warp-/thread-ID, scalar input
+    parameters), in which case the divergence pattern exhibits similarly across warps.
+  - Problem of compaction:  
+      1. The alignment of a thread in a SIMD group is fixed, limiting the potential for compaction. Control frequently diverges in a manner that prevents compaction because of the way in which the fixed alignment of threads to lanes is done.
+      2. synchronization overhead at divergence and reconverge
+  - Solution: SLP
+    - permute home lane of threads when making a new Warp
+
+### [SIMD Divergence Optimization Through Intra‐Warp Compaction](https://dl.acm.org/citation.cfm?id=2485954)
+  - *Note*: In Intel’s Ivy Bridge GPUs, the number of lanes in a SIMD instruction (sometimes referred
+    to as the warp-width) varies from 8, 16 to 32. This number is 32 for NVIDIA GPUs and 64 for AMD’s GPUs. However, the corresponding number of hardware
+    execution lanes is typically a fraction of the SIMD instruction width: 4-wide SIMD ALU in the case of Intel’s Ivy
+    Bridge GPU, 8-wide for NVIDIA, and 16-wide for AMD Radeon. This implies that each wide SIMD instruction typically executes over multiple execution cycles due to narrower hardware width. Why?
+      - register file concurrent read/write limits
+      - dependency not needed
+      - pipeline data forwarding not needed
+  - Intel Ivy Bridge GPU Architecture:
+
