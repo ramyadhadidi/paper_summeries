@@ -41,6 +41,11 @@
     - Extension to DWF: Warp barrier: keeps threads in their original static warp after reconverge. When reach a divergent
     point, insert barrier before immediate post-dominator. (This will solve fig1.a problem)
   - Solution: TBC
-    - block-wide reconverge stack: at divergence, the warps **synchronize** and compacted into new warps.
-    - In reconvergence point, threads will again **synchronize** and restore their static warp formation
+    - block-wide reconverge stack: at divergence, the warps *synchronize* and compacted into new warps.
+    - In reconvergence point, threads will again *synchronize* and restore their static warp formation
       - The synchronization overhead at branches can be covered by switching the execution to a different thread block running on the same SIMT core
+  - **Likely convergence point**: they extend the PDOM reconvergence stack to capture rarely taken divergence and reconverge earlier.
+    - the likely convergence point is identified with profiling or control flow analysis (cons)
+    - insert two more entries in stack: LPC(Likely convergence point), LPos(stack position of likely convergence point) 
+    - study (Fig10)
+    - benefit: smaller stack size + small speedup 
