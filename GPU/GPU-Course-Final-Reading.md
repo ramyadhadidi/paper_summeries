@@ -46,6 +46,8 @@
       - The synchronization overhead at branches can be covered by switching the execution to a different thread block running on the same SIMT core
   - **Likely convergence point**: they extend the PDOM reconvergence stack to capture rarely taken divergence and reconverge earlier.
     - the likely convergence point is identified with profiling or control flow analysis (cons)
-    - insert two more entries in stack: LPC(Likely convergence point), LPos(stack position of likely convergence point) 
+    - insert two more column to stack: LPC(Likely convergence point), LPos(stack position of likely convergence point)
+    - on divergence insert Likely reconverge point as well with zero active threads
+      - for each stack access check if PC=LPC, then insert that stack active thread mask to LPos entry
     - study (Fig10)
     - benefit: smaller stack size + small speedup 
