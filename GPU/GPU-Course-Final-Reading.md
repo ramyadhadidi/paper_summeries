@@ -81,3 +81,7 @@
     - BCC: basic cycle compression: where contiguous sets of channels(lane) are disabled
     - SCC: swizzled-cycle compression: where turned off channels are not contiguous. Group them with swizzling(permutation) to enable dead cycles harvest.
 
+### [The Dual Path Execution Model for Efficient GPU Control Flow](https://lph.ece.utexas.edu/merez/uploads/MattanErez/hpca2013_dpe.pdf)
+  - Opportunity: Reconvergence-based techniques permit only a single divergent path to be active at any point in time
+    - Execute two path by interleaving them
+
