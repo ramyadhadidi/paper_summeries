@@ -1,6 +1,7 @@
+[TOC]
+
 ### [Warp Level Divergence: Characterization, Impact, and Mitigation](http://people.engr.ncsu.edu/hzhou/hpca14.pdf)
-  - Problem: 
-  With a TB-level resource management scheme, all the
+  - Problem: With a TB-level resource management scheme, all the
   resource required by a TB is allocated/released when it is dispatched to / finished in a streaming
   multiprocessor (SM). TB-level resource management is not good. First, different warps in a TB may finish at different
   times, which we refer to as ‘warp-level divergence’. Due to TB-level resource management, the resources
@@ -62,7 +63,7 @@
     - permute home lane of threads when making a new Warp
 
 ### [SIMD Divergence Optimization Through Intra‐Warp Compaction](https://dl.acm.org/citation.cfm?id=2485954)
-  - *Note*: In Intel’s Ivy Bridge GPUs, the number of lanes in a SIMD instruction (sometimes referred
+  - **Note**: In Intel’s Ivy Bridge GPUs, the number of lanes in a SIMD instruction (sometimes referred
     to as the warp-width) varies from 8, 16 to 32. This number is 32 for NVIDIA GPUs and 64 for AMD’s GPUs. However, the corresponding number of hardware
     execution lanes is typically a fraction of the SIMD instruction width: 4-wide SIMD ALU in the case of Intel’s Ivy
     Bridge GPU, 8-wide for NVIDIA, and 16-wide for AMD Radeon. This implies that each wide SIMD instruction typically executes over multiple execution cycles due to narrower hardware width. Why?
@@ -85,7 +86,7 @@
 ### [The Dual Path Execution Model for Efficient GPU Control Flow](https://lph.ece.utexas.edu/merez/uploads/MattanErez/hpca2013_dpe.pdf) **DPE**
   - Opportunity: Reconvergence-based techniques permit only a single divergent path to be active at any point in time
     - Execute two path by interleaving them
-  - Note: NVidia SM from a warp of 32 threads *and* AMD SIMD core form wavefront of 64 workitems
+  - **Note**: NVidia SM from a warp of 32 threads *and* AMD SIMD core form wavefront of 64 workitems
   - There are two main reasons why SIMD utilization decreases with divergence:
     1. masked operations needlessly consume resources (Solved by DWF,TBC,SLP)
     2. execution of concurrent control paths is serialized with every divergence (This paper)
@@ -108,5 +109,10 @@
     - Metric for potential: Avg_Path = Sigma(i=1,N) NumPath_i / N    N::total number of warp instructions      NumPath::total number of concurrently schedulable paths
 
 ### [Improving GPU Performance via Large Warps and Two-Level Warp Scheduling](https://users.ece.cmu.edu/~omutlu/pub/large-gpu-warps_micro11.pdf)
+  - **Note**: GPUs utilize the *thread-level parallelism*, GPUs exploit TLP in two major ways:
+    1. threads executing the same code are grouped into fixed sized batches known as warps (scaler frontend and SIMD backend)
+    2. GPUs concurrently execute many warps on a single core
+  - Problem: 
+    1.  divergence (complex control flow) & unable to hide memory latency between warps
 
 
