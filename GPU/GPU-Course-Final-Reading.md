@@ -105,6 +105,8 @@
       - on divergence pending bits are copied to shadow bit. On query we just check shadow bits of two scoreboards. on write-back they are reseted. Therefore, can concurrently execute r4 E-D. or can wait on r0 A-C.
       - section 3.2 + fig6
     - *non-interleavable branch*: the branch with just if and not any else statement
-    - Avg_Path = Sigma(i=1,N) NumPath_i / N    N::total number of warp instructions      NumPath::total number of concurrently schedulable paths
+    - Metric for potential: Avg_Path = Sigma(i=1,N) NumPath_i / N    N::total number of warp instructions      NumPath::total number of concurrently schedulable paths
+
+### [Improving GPU Performance via Large Warps and Two-Level Warp Scheduling](https://users.ece.cmu.edu/~omutlu/pub/large-gpu-warps_micro11.pdf)
 
 
