@@ -28,7 +28,7 @@
   - Problem: the benefits of DWF can be affected by the scheduling
     policy used to issue ready warps and memory
     systems that limit bandwidth to first level memory structures.
-      - issuing ready warps with smaller size will fall behind from other: *starvation eddy*
+      - issuing ready warps with smaller size will fall behind from others: *starvation eddy*
       - threads in a warp usually access nearby memory addresses so more coalescing. But, DWF tries to optimize 
       control flow by merging different warps, therefore increasing memory references.
   - In general, we observed three problems when running CUDA applications on DWF enabled execution model: 
@@ -70,4 +70,14 @@
       - dependency not needed
       - pipeline data forwarding not needed
   - Intel Ivy Bridge GPU Architecture:
+    - shader cores: execution units (EU) organized in subslices of 8 EUs 
+    - each EU have 6-8 hardware threads
+    - each EU thread is a SIMD core 
+      - Each thread executes a kernel
+      - Numbers: 24 EU, each EU 6 threads -> 144 threads
+    - instructions can be variable in SIMD lane requirements (Intel CISC)
+    - Mapping to BSP Model -> all threads in TB to a single EU thread
+  - **Paper**: simple execution cycle compression techniques when certain groups of turned-off lanes exist in the instruction stream
+    - BCC: basic cycle compression: where contiguous sets of channels(lane) are disabled
+    - SCC: swizzled-cycle compression: where turned off channels are not contiguous. Group them with swizzling(permutation) to enable dead cycles harvest.
 
