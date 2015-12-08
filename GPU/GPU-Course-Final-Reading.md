@@ -76,12 +76,31 @@
       - Each thread executes a kernel
       - Numbers: 24 EU, each EU 6 threads -> 144 threads
     - instructions can be variable in SIMD lane requirements (Intel CISC)
+    - each thread has its own explicit PC in contrast with AMD and NVidia GPUs
     - Mapping to BSP Model -> all threads in TB to a single EU thread
   - **Paper**: simple execution cycle compression techniques when certain groups of turned-off lanes exist in the instruction stream
     - BCC: basic cycle compression: where contiguous sets of channels(lane) are disabled
     - SCC: swizzled-cycle compression: where turned off channels are not contiguous. Group them with swizzling(permutation) to enable dead cycles harvest.
 
-### [The Dual Path Execution Model for Efficient GPU Control Flow](https://lph.ece.utexas.edu/merez/uploads/MattanErez/hpca2013_dpe.pdf)
+### [The Dual Path Execution Model for Efficient GPU Control Flow](https://lph.ece.utexas.edu/merez/uploads/MattanErez/hpca2013_dpe.pdf) **DPE**
   - Opportunity: Reconvergence-based techniques permit only a single divergent path to be active at any point in time
     - Execute two path by interleaving them
+  - Note: NVidia SM from a warp of 32 threads *and* AMD SIMD core form wavefront of 64 workitems
+  - There are two main reasons why SIMD utilization decreases with divergence:
+    1. masked operations needlessly consume resources (Solved by DWF,TBC,SLP)
+    2. execution of concurrent control paths is serialized with every divergence (This paper)
+  - previous research: dynamic warp subdivision (**DWS**) (fig3)
+    - The basic idea of DW is to treat both the left and right paths of a divergent branch as independently schedulable units, or warp-splits, such that
+      diverging path serialization is avoided and intra-warp latency tolerance is achieved
+    - uses traditional reconverge stack or warp-split table (WST) based on a threshold of instruction number
+    - problem: 
+      1. uses RPC of last stack entry, rather than current divergent path. This continues for further division as well. Therefore, further subdivision cannot reconverge.
+      2. DWS attempts to dynamically recombine warp-splits, but is not guaranteed.
+      3. a warp is subdivided only if the divergent branch’s immediate post-dominator is followed up by a short basic block of no more than N instructions
+  - **DPE**:
+    - stack entries now track pathR and pathL together in a single row. RPC is same, active mask and PC is different.
+    - when one of the PCs matches RPC, that path is invalidated. If both path is invalid, then entry is popped
+    - dependencies: Recent GPUs from NVIDIA, such as Fermi, allow threads within the same warp to be issued back to back using a per-warp scoreboard to track data dependencies
+      - to support DPE: two scoreboards for two path + shadow bit for each entry
+
 
