@@ -132,11 +132,24 @@
     the group.
     - for mixing it with LWM need to add a timeout. Since, a large warp might starve other warps more likely.
 
-### [Cache-Conscious Wavefront Scheduling](https://www.ece.ubc.ca/~aamodt/papers/tgrogers.micro2012.pdf)**CCWS**
+### [Cache-Conscious Wavefront Scheduling](https://www.ece.ubc.ca/~aamodt/papers/tgrogers.micro2012.pdf) **CCWS**
   - **Note**: Belady-optimal replacement policy: evict the lines from the cache the was re-referenced furtherest
+  - *Note*: thread::workitem wavefront::warp workgroup::threadBlock
   - Observation: Majority of data reuse by a warp comes from intra-warp locality
+    - Adding more wavefronts to hide latency traded off against creating more long latency memory references due to thrashing
   - Goal: Schedule warps somehow that scheduler does not destroy intra-warp locality
-    - How: with * lost intra-wavefront locality detector* which will keep a locality score to each warp and ensures that 
+    - How: with *lost intra-wavefront locality detector* which will keep a locality score for each warp and ensures that 
       scheduler will not destroy it.
+  - *Static Wavefront Limiting* (SWL): an API that programmer based on his program workset size defines how many
+    wavefront are allowed to be executed concurrently.
+  - CCWS: change SWL to dynamic
+    - Keep track of locality scores. Warp with largest score drop to bottom of the list(fig6), and warps with
+      lowest score are close to cutoff. In fact, this policy decreases the re-reference period for warps with highest
+      score.
+    - LLD: Lost locality detector 
+      - have VTA (victim tag array) for each wavefront. 
+      - keep a score of LLS (locality lost score). Start from a baseline
+      - for a wavefront if hit in VTA, increase score, else decrease score by one until baseline
+      - cumulative LLS cutoff = NumActiveWaves * BaseLocalityScore
 
-
+### [OWL: Cooperative Thread Array Aware Scheduling Techniques for Improving GPGPU Performance](https://users.ece.cmu.edu/~omutlu/pub/owl_asplos13.pdf)
