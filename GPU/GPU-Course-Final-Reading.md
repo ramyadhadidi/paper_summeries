@@ -102,5 +102,9 @@
     - when one of the PCs matches RPC, that path is invalidated. If both path is invalid, then entry is popped
     - dependencies: Recent GPUs from NVIDIA, such as Fermi, allow threads within the same warp to be issued back to back using a per-warp scoreboard to track data dependencies
       - to support DPE: two scoreboards for two path + shadow bit for each entry
+      - on divergence pending bits are copied to shadow bit. On query we just check shadow bits of two scoreboards. on write-back they are reseted. Therefore, can concurrently execute r4 E-D. or can wait on r0 A-C.
+      - section 3.2 + fig6
+    - *non-interleavable branch*: the branch with just if and not any else statement
+    - Avg_Path = Sigma(i=1,N) NumPath_i / N    N::total number of warp instructions      NumPath::total number of concurrently schedulable paths
 
 
