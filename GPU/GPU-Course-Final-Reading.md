@@ -113,6 +113,9 @@
     1. threads executing the same code are grouped into fixed sized batches known as warps (scaler frontend and SIMD backend)
     2. GPUs concurrently execute many warps on a single core
   - Problem: 
-    1.  divergence (complex control flow) & unable to hide memory latency between warps
+    1. divergence (complex control flow) & unable to hide memory latency between warps
+    2. not able to hide memory latency
+      1. Round-Robing all warps progress same rate and same request times
+      2. Greedy, destroy data locality and starvation
 
 
