@@ -1,5 +1,3 @@
-[TOC]
-
 ### [Warp Level Divergence: Characterization, Impact, and Mitigation](http://people.engr.ncsu.edu/hzhou/hpca14.pdf)
   - Problem: With a TB-level resource management scheme, all the
   resource required by a TB is allocated/released when it is dispatched to / finished in a streaming
@@ -108,14 +106,25 @@
     - *non-interleavable branch*: the branch with just if and not any else statement
     - Metric for potential: Avg_Path = Sigma(i=1,N) NumPath_i / N    N::total number of warp instructions      NumPath::total number of concurrently schedulable paths
 
-### [Improving GPU Performance via Large Warps and Two-Level Warp Scheduling](https://users.ece.cmu.edu/~omutlu/pub/large-gpu-warps_micro11.pdf)
+### [Improving GPU Performance via Large Warps and Two-Level Warp Scheduling](https://users.ece.cmu.edu/~omutlu/pub/large-gpu-warps_micro11.pdf) **LWM**
   - **Note**: GPUs utilize the *thread-level parallelism*, GPUs exploit TLP in two major ways:
     1. threads executing the same code are grouped into fixed sized batches known as warps (scaler frontend and SIMD backend)
     2. GPUs concurrently execute many warps on a single core
+  - **Note**: *barrel processing*: A barrel processor is a CPU that switches between threads of execution on every cycle. 
+    This CPU design technique is also known as "interleaved" or "fine-grained" temporal multithreading.
   - Problem: 
     1. divergence (complex control flow) & unable to hide memory latency between warps
     2. not able to hide memory latency
       1. Round-Robing all warps progress same rate and same request times
       2. Greedy, destroy data locality and starvation
+  - Goal:
+    1. Large Warp Microarchitecture (LWM): create large warp and then dynamically create sub-warps, this way even in divergence we will have large number of active threads
+    2. two level Round-Robin: exploit data locality between warps while hiding latency
+  - Current Warp Scheduling inside a SM: In the fetch stage, the scheduler selects a warp from the list of ready warps using a round-robin policy that gives equal priority to each warp.
+  - LWM: same as DWF but form warps by looking inside large-warp, same changes to reg-file
+    - barrel processing consideration: Once a large warp is selected, it is not reconsidered for scheduling until the first sub-warp completes execution
+    - sub-warps compaction (same as DWF)
+  - Two level Round-Robin: 
+
 
 
