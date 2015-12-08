@@ -132,5 +132,11 @@
     the group.
     - for mixing it with LWM need to add a timeout. Since, a large warp might starve other warps more likely.
 
+### [Cache-Conscious Wavefront Scheduling](https://www.ece.ubc.ca/~aamodt/papers/tgrogers.micro2012.pdf)**CCWS**
+  - **Note**: Belady-optimal replacement policy: evict the lines from the cache the was re-referenced furtherest
+  - Observation: Majority of data reuse by a warp comes from intra-warp locality
+  - Goal: Schedule warps somehow that scheduler does not destroy intra-warp locality
+    - How: with * lost intra-wavefront locality detector* which will keep a locality score to each warp and ensures that 
+      scheduler will not destroy it.
 
 
