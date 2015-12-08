@@ -121,10 +121,16 @@
     1. Large Warp Microarchitecture (LWM): create large warp and then dynamically create sub-warps, this way even in divergence we will have large number of active threads
     2. two level Round-Robin: exploit data locality between warps while hiding latency
   - Current Warp Scheduling inside a SM: In the fetch stage, the scheduler selects a warp from the list of ready warps using a round-robin policy that gives equal priority to each warp.
-  - LWM: same as DWF but form warps by looking inside large-warp, same changes to reg-file
+  - LWM: same as DWF but form warps by looking inside large-warp
     - barrel processing consideration: Once a large warp is selected, it is not reconsidered for scheduling until the first sub-warp completes execution
-    - sub-warps compaction (same as DWF)
-  - Two level Round-Robin: 
+    - re-fetch policy: Must wait till last sub-warp finishes
+    - last warp effect in divergence decision (must wait until all sub-warps are done) and effect of last thread as well
+    - sub-warps compaction optimization (same as DWF)
+    - dependency check as well: Thread not available for packing into a sub-warp unless previous issue sub-warp has completed - a single bit status for each thread to see if it is packed or not
+    - same changes as DWF to reg-file: separate decoder per RF bank
+  - Two level Round-Robin: divide warps in fetch groups and give priority to one of them. Continue fetching from that groups warps in a round-robing fashion until reach stall. Then, change
+    the group.
+    - for mixing it with LWM need to add a timeout. Since, a large warp might starve other warps more likely.
 
 
 
