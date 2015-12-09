@@ -59,6 +59,7 @@
       2. synchronization overhead at divergence and reconverge
   - Solution: SLP
     - permute home lane of threads when making a new Warp
+    - doing this at first, by changing lane mapping
 
 ### [SIMD Divergence Optimization Through Intra‐Warp Compaction](https://dl.acm.org/citation.cfm?id=2485954)
   - **Note**: In Intel’s Ivy Bridge GPUs, the number of lanes in a SIMD instruction (sometimes referred
