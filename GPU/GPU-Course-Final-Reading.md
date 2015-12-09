@@ -173,3 +173,16 @@
   - opportunistic prefetching: 
     - we lose DRAM Row locality by BLP
     - prefetch already open lines to L2
+
+### [CudaDMA: optimizing GPU memory bandwidth via warp specialization](https://ppl.stanford.edu/papers/sc11-bauer.pdf)
+  - decoupling data-movement, computation and synchronization in CUDA
+  - CudaDMA, an extensible API for efficiently managing data transfers between the on-chip and off-chip memories of GPUs
+  - CudaDMA enables the programmer to decouple the size and dimensionality of the data from the size and dimensionality of the computation, improving both programmability and performance
+  - Decoupling is achieved by specializing warps into compute warps and DMA warps
+  - There three factors related to data transfer that limit compute capability:
+    1. Many long-latency memory accesses
+    2. Coarse-grained synchronization
+    3. Data Access Patterns
+  - Achieving high MLP on a GPU can commonly be impeded by two factors:
+    1. 
+    2.
