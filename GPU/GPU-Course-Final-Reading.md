@@ -45,6 +45,7 @@
     - block-wide reconverge stack: at divergence, the warps *synchronize* and compacted into new warps.
     - In reconvergence point, threads will again *synchronize* and restore their static warp formation
       - The synchronization overhead at branches can be covered by switching the execution to a different thread block running on the same SIMT core
+    - Synchronization in both cases are made with another entry in reconvergence stack for tracking number of the warps
   - **Likely convergence point**: they extend the PDOM reconvergence stack to capture rarely taken divergence and reconverge earlier.
     - the likely convergence point is identified with profiling or control flow analysis (cons)
     - insert two more column to stack: LPC(Likely convergence point), LPos(stack position of likely convergence point)
