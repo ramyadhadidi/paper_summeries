@@ -2,7 +2,7 @@
   - Problem: With a TB-level resource management scheme, all the
   resource required by a TB is allocated/released when it is dispatched to / finished in a streaming
   multiprocessor (SM). TB-level resource management is not good. First, different warps in a TB may finish at different
-  times, which we refer to as ‘warp-level divergence’. Due to TB-level resource management, the resources
+  times, which we refer to as 'warp-level divergence'. Due to TB-level resource management, the resources
   allocated to early finished warps are essentially wasted as they need to wait for the longest running
   warp in the same TB to finish. Second, TB-level management can lead to resource fragmentation.
   
@@ -152,4 +152,24 @@
       - for a wavefront if hit in VTA, increase score, else decrease score by one until baseline
       - cumulative LLS cutoff = NumActiveWaves * BaseLocalityScore
 
-### [OWL: Cooperative Thread Array Aware Scheduling Techniques for Improving GPGPU Performance](https://users.ece.cmu.edu/~omutlu/pub/owl_asplos13.pdf)
+### [OWL: Cooperative Thread Array Aware Scheduling Techniques for Improving GPGPU Performance](https://users.ece.cmu.edu/~omutlu/pub/owl_asplos13.pdf) **OWL**
+  - observation: they identify that the scheduling decisions made by warp scheduling policies are agnostic to thread-block behavior. 
+    - Long memory stalls due to RR scheduling 
+  - c(O)operative thread array a(W)are warp schedu(L)ing policy: OWL policy is a four-pronged concerted
+    1. *CTA-aware two-level warp scheduler*: make smaller group of CTAs, RR
+    2. *locality aware warp scheduler*: option 1 with prioritize one group until done
+    3. *bank-level parallelism aware warp scheduling*: significant DRAM page locality between consecutive CTAs. Hence, less bank level parallelism (BLP). option 2 with this change. *between cores*
+    4. *opportunistic prefetching*: recover the loss in DRAM row locality from option 3. Implement opportunistic prefetching mechanism, bring the data from the opened row to the nearest on-chip L2 cache
+  - CTA-aware two-level warp scheduler (CTA-Aware):
+    - group CTAs in smaller groups and prioritizes one group over others until all warps inside that groups is block-wide. After that next group
+    - each group should have a minimum number of warps based on pipeline size and ...
+  - Locality aware warp scheduler (CTA-Aware-Locality):
+    - Prioritize one group to reduce L1 misses
+    - same as above, but as soon as prioritized group is ready will switch to it
+  - bank-level parallelism aware warp scheduling (CTA-Aware-Locality-BLP):
+   - improves BLP
+   - consider two cores with CTA-Aware-Locality scheme. If CTAs are consecutive, then small bank number will be utilized
+   - ensure that non-consecutive CTAs are always prioritized in different cores
+  - opportunistic prefetching: 
+    - we lose DRAM Row locality by BLP
+    - prefetch already open lines to L2
