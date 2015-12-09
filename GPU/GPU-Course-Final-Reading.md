@@ -11,6 +11,9 @@
   dispatched to an SM as long as it has sufficient resource for a warp rather than a TB.
   Furthermore, whenever a warp is completed, its resource is released and can accommodate a new warp. 
 
+  - all of the shared memory is allocated at first for a partial-block 
+  - just one partial block at a time
+
 ### [Dynamic Warp Formation: Efficient MIMD Control Flow on SIMD Graphics Hardware](https://www.ece.ubc.ca/~aamodt/papers/wwlfung.micro2007.pdf) **DWF**
   - Problem: underutilization at warp level for threads. So, group threads sooner than PDOM
   - Solution DWF: Dynamically form warps rather than statically based on PDOM reconverge stack
