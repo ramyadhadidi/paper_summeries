@@ -80,7 +80,7 @@
     - Mapping to BSP Model -> all threads in TB to a single EU thread
   - **Paper**: simple execution cycle compression techniques when certain groups of turned-off lanes exist in the instruction stream
     - BCC: basic cycle compression: where contiguous sets of channels(lane) are disabled
-    - SCC: swizzled-cycle compression: where turned off channels are not contiguous. Group them with swizzling(permutation) to enable dead cycles harvest.
+    - SCC: swizzled-cycle compression: where turned off channels are not contiguous. Group them with swizzling(permutation) to enable dead cycles harvest. (Permutation first with crossbar, then compaction)
 
 ### [The Dual Path Execution Model for Efficient GPU Control Flow](https://lph.ece.utexas.edu/merez/uploads/MattanErez/hpca2013_dpe.pdf) **DPE**
   - Opportunity: Reconvergence-based techniques permit only a single divergent path to be active at any point in time
