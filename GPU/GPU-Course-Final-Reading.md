@@ -184,5 +184,5 @@
     2. Coarse-grained synchronization
     3. Data Access Patterns
   - Achieving high MLP on a GPU can commonly be impeded by two factors:
-    1. 
-    2.
+    1. Instruction Issue
+    2. Data Access Patterns
