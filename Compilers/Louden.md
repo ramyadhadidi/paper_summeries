@@ -1,5 +1,8 @@
+Summery of "Compiler Construction - Principles and Practice" by K. C. Louden
+
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
 
 - [Chapter 1 - Introduction](#chapter-1---introduction)
   - [History](#history)
@@ -8,6 +11,8 @@
   - [Major Data Structures](#major-data-structures)
   - [Other issues](#other-issues)
   - [Bootstraping and Porting](#bootstraping-and-porting)
+- [Chapter 2 - Scanning](#chapter-2---scanning)
+- [Chapter 3 - Context-Free Grammars and Parsing](#chapter-3---context-free-grammars-and-parsing)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -42,8 +47,8 @@ Compilers: Computer programs that translate one language to another. From source
 
 ## Compiler Phases
 
- - Scanner-Lexical Analysis-Literal Table
- - Parse-Syntactic Analysis-Generate Syntax Tree -> Symbol Table
+ - Scanner-Lexical Analysis-done by Regular expression-Literal Table
+ - Parser-Syntactic Analysis-done by Grammar rules-Generate Syntax Tree -> Symbol Table
  - Semantic Analysis (the meaning)-process static semantics (deceleration, type checking)-produces _attributes_ and add them to tree
  - Source code optimization-e.g. constant folding
  - Code generation-take IR and produce machine code
@@ -99,4 +104,21 @@ called **Attributes**. These attributes are held in **Token Record**.
 Different type of tokens: reserved words, special symbols
 
 Usually scanner works under the command of parser. So, scanner will not produce the tokens all in one action.
+
+__ignored rest__
+
+<!-- **************************************************************************** -->
+
+# Chapter 3 - Context-Free Grammars and Parsing
+
+Parsing (syntactic analysis) is done using **Grammar rules**, same as lexical analysis (scanning) which is done by regular expressions.
+The only difference is that parsing is **recursive** to allows nested expressions.
+The final output is a **syntax tree** or **parse tree**.
+
+Two general method in parsing: top-down and bottom-up parsing.
+
+Parser takes the token from scanner and construct a syntax tree. Also, parser gets error tokens from scanner, and while reporting an error, should **recover** and continue the processing to find more errors. 
+
+
+
 
