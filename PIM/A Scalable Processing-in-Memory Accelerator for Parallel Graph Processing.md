@@ -87,10 +87,29 @@ Also, there is a need for a buffer in each vault for non-blocking messages. Func
 ## Prefetching
 in-order cores so stalls on each L1 miss. Therefore Tessaract has 2 prefetcher: list prefetcher, and message-triggered prefetcher.
 
+Also, all cores have a prefetch buffer, separate from cache.
+
 ### List Prefetching
+Stride prefetcher based on reference prediction. It gets hints about size and stride in the beginning of every loop by the software.
 
 ### Message-Triggered Prefetcher
+An optional field in non-blocking remote function call. When a non-blocking message arrives, it goes and fetch that address. This combined with the late issuing of message queue, makes this prefetcher good.
+
+## Programing Interface
+Check paper for details
 
 
 ## Follow-ups
   1. ref #3 for VAT
+  2. DRAM timing ref #41
+  3. Power studies by ref #48
+  4. Topologies ref #29 
+
+## Weaknesses
+  1. Relies too much on software method
+  2. offloads functions _directly_ to a vault
+  3. vault mapping is tailored for each application benefits
+  4. list prefetcher relies on input hint
+  5. prefetch buffer is hard to implement, manage. If you have more space, why do not use it as a cache?
+  6. No host simulation for Tessaract cases, no offloading time
+  7. Small footprint of 3-5GB (128GB total system's memory)
