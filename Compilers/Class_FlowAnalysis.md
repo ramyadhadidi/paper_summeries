@@ -53,11 +53,31 @@ Branch statement and branch target is easily distinguishable in Basic Block repr
   - any statement immediately after return or branch
 
 ### Extended Basic Block (EBB)
-Extend variable scope, and reduce register usage. Brings saftley issues
+Extend variable scope, and reduce register usage. Brings safely issues
 
 ## Control Flow Graph (CFG)
-Basic blocks as nodes, and branches and fall-throughs as edges. We do not have the data, so and edge
+Basic blocks as nodes, and branches and fall-through as edges. We do not have the data, so and edge
 means that program may take the path. 2 simple rules. Done in IR level.
 
 ### Form a EBB from CFG
-All additional block should be only accessible from the root of EBB. We move through successors. 
+All additional blocks from BBB should be only accessible from the root of a single block in EBB. We move through successors.
+
+### Dominator
+A dominator block is a gate keeper for a block region. Every path must go through the dominator to reach to any node in region.
+This happens mostly in loops.
+
+A block could have multiple dominators. We call all dominators of a node _dominator set_ or _dom(node)_. Also, each node dominates itself.
+This causes to capture self-loops.
+
+Bunch of definition in slides. _proper dominators_, _immidiate dominator_.
+
+If a node is in dominator set of node A, it should be also in dominator set of all predecessors nodes of node A.
+
+Computing dominators is O(n^2) problem, Tarjan & Langeur algorithm made it O(n) (linear).
+
+### Finding Loops
+_back edge_: is an edge to the nodes that comes form its dominator nodes.
+
+_natural Loops_:
+
+
