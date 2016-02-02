@@ -12,6 +12,12 @@ LLVM Tools:
 Examples:
 - `clang -O3 -emit-llvm hello.c -c -o hello.bc`
 
+### LLVM Pass
+Passes perform the transformations and optimizations that make up the compiler, they build the analysis 
+results that are used by these transformations, and they are, above all, a structuring technique for compiler code.
+
+All LLVM passes are subclasses of the _Pass_ class, which implement functionality by overriding virtual methods inherited from _Pass_.
+
 
 
 ###HW1
