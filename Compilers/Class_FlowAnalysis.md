@@ -80,4 +80,28 @@ _back edge_: is an edge to the nodes that comes form its dominator nodes.
 
 _natural Loops_:
 
+### Points & Paths
+Points: edge-related properties: after, before, and between statements of a BB
 
+Path: a sequence of points
+
+
+Unreachable code: dangling code (pure CFG)
+
+-O0: inlining, unreachable code removal, constructing CFG
+
+## Global Dataflow Analysis
+Find _def_ and _use_ of variables. CFG is used to find if any def or use is reachable or not. These analysis is useful in transformations.
+Some examples:
+  - Constant propagation
+  - Copy values
+  - Branch balancing
+
+_kill_ and _reach_ of a definition.
+
+Q) Is using just _kill_ and _reach_ without dataflow analysis produce a safe code? If yes, so why we are doing dataflow analysis.
+
+### Dataflow equation for each BB
+  - _gen_ set: scan backward, for each definition insert it into gen set and stop looking for that def
+  - _kill_ set: the ones the are redefined
+  - _in_ set: look for reach of that definition = U[P] : P isPartof pred[B]
