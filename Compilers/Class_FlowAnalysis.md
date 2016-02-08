@@ -103,5 +103,10 @@ Q) Is using just _kill_ and _reach_ without dataflow analysis produce a safe cod
 
 ### Dataflow equation for each BB
   - _gen_ set: scan backward, for each definition insert it into gen set and stop looking for that def
-  - _kill_ set: the ones the are redefined
+  - _kill_ set: the ones the are redefined, and are not allowed to continue from that block
   - _in_ set: look for reach of that definition = U[P] : P isPartof pred[B]
+
+### Working Set
+### Loop merging
+
+## Reaching Defintion Analysis
