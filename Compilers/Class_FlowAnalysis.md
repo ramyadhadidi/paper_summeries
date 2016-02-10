@@ -110,3 +110,15 @@ Q) Is using just _kill_ and _reach_ without dataflow analysis produce a safe cod
 ### Loop merging
 
 ## Reaching Defintion Analysis
+
+### D-U and U-D chains
+
+### Note
+Static over-optimization: do propagation for variables, therefore you will have more opportunity for optimizing. Do not do it for
+dynamic variables, since it will be unsafe. Unsafe languages does not have this opportunity (C).
+
+This brings another question that how we can derefrece pointers: 
+ - In reaching definition analysis we do not need to worry about (L value?) (..=*p)
+ - (p=&a, *p=...) this way is easy, we can easily derefrence and create reaching definition corretly
+ - C pointers does not fit int these, we should not killi
+ - Look at llvm pointer analysis

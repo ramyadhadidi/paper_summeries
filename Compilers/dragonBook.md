@@ -45,4 +45,38 @@ Different classification of languages. _First generation languages_ are the mach
 
 Another view is _imperative_ and _declarative_. In imperative languages like C++, programmer specifies how a computation must be done. There is notion of program state and statements that change the state in imperative languages. Functional languages like Haskell and Prolog are declarative.
 
-__Scripting languages_ are languages with high-level operators designed for gluing together computation. Like Python, Ruby, Perl.
+_Scripting languages_ are languages with high-level operators designed for gluing together computation. Like Python, Ruby, Perl.
+
+<!-- ******************************************************************************** -->
+# Chapter 7 - RunTime Environment
+
+## Storage
+ - _padding_, _aligned_, _stack_, _heap_.
+ - Activation Tree: how functions are executed
+ - Head needs _grabage collection_. Provided by some languages
+ - Activation Records, _callee_ and _caller_ responsibilities
+    - Callee is code is inserted once
+    - Caller code multiple time
+    - So it is better to save the records all within callee, but some information is not accessible by callee (top-stack, pc)
+    - usually caller just allocates parameters, return values and two above, then gives control to callee
+ - A general activation record:
+    - Actual parameters
+    - returned value (if dynamic, a pointer to it)
+    - control and access links
+ - _calling sequence_, _return sequence_
+ - _type safety_ languages: you cannot access all locations of memory, you cannot change pointer arbitrary, determines data types at compile time
+ - _daynamically typed_ or _unsafe_: opposite of type safety, C, C++
+
+## Heap Management
+ - _memory-manager_ ,_garbage collection_, _best-fit_, _next-fit_
+ - performance metrics: overall execution time, space usage, pause time, program locality (you would lost it if you move data, or try best-fit)
+ - _Reachability_: if an variable gets unreachable, it cannot be reachable again. This is the principal of garbage collection.
+    - There is many algorithms for it:
+      - Refrence Counting 
+      - Trace-Based:
+        - Mark-and-Sweep
+        - Mark-and_compact
+      - Short-Pause garabage collection
+
+<!-- ******************************************************************************** -->
+
