@@ -68,6 +68,6 @@ Cons:
   - ISA change
   - application Change (automatically is future work)
   - OS pages system changes + TLB
-
+  - self-developed workloads
 
 
