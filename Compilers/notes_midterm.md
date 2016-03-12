@@ -1,4 +1,5 @@
 
+<!--- ------------------------ --->
 ## Basic blocks
 Three rules to find the leaders:
   - first statement
@@ -26,7 +27,7 @@ Contracted AST that shows sharing explicitly. It is good for:
 
 
 
-
+<!--- ------------------------ --->
 ## Dominators
 
 Dominator set node a **Dom(a)**: all nodes that dominates a
@@ -41,9 +42,7 @@ node d dominates only its descendents in the tree.
 
 
 
-
-
-
+<!--- ------------------------ --->
 ## Loops
 
 ### Strongly-connected component (SCC)
@@ -67,7 +66,7 @@ How to:
  - look for nodes that can reach b among nodes dominated by a
 
 
-
+<!--- ------------------------ --->
 ## Regions
 A region is a set of nodes N that include a header with the following properties:
  - the header must dominate all the nodes in the region;
@@ -78,9 +77,7 @@ A loop is a special region that has the following additional properties:
  - All back edges to the header are included in the loop;
 
 
-
-
-
+<!--- ------------------------ --->
 ## Flow Analysis
  - Control Flow Analysis
  - Data Flow Analysis
@@ -94,7 +91,7 @@ it may be perfromed on different levels: source code, IR, target machine code
 - in-live(n) =  out-live(n) \ def (n)  ∪ ref (n)
 
 ##### Available Expression (Forward, intersection, gen->available kill->) 
-- Redundant computation
+- Redundant computation, CSE (common subexpression elimination)
 - sem-avail(n) ⊇ syn-avail(n)
 - out-avail(n) =  in-avail(n) ∪ gen(n)  \ kill(n)
 
@@ -113,9 +110,23 @@ j=j-1
 t4 = j*4  --> t4 = t4-4
 ```
 
+<!--- ------------------------ --->
+## Partial-Redundancy Elimination (PRE)
+Minimizing the number of expression evaluation that is called. 
+ - Subexpression(common & partial)
+ - loop-invariant expression
 
+_Partial_ means that this redundency is found in some pathes and not all of them.
 
+### Loop Invariant Code Motion
+If an expression is not redefined inside a loop we can move it outside the loop to reduce the number of recomputations.
+However, we should take care of cases when loop is not executed. Then:
+ - the moved instruction will get executed and might throw and exception
+ - if loop exits early, the optimized program may take longer
 
+Therefore, to solve this, compilers add another if condition before the while (or for).
+
+<!--- ------------------------ --->
 ## SSA Form (Static Single-Assignment)
 It is form of IR that every value is assigned just once. Therefore, it is possible to have multiple values in SSA 
 pointing to a value in non-SSA format. So, we import &#934;(x,x,...,x) functions in every joint point for all variables 
