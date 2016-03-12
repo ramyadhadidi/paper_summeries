@@ -77,3 +77,20 @@ A loop is a special region that has the following additional properties:
 __Code optimization__: a program transformation that preserves correctness and improves performance.
 it may be perfromed on different levels: source code, IR, target machine code
 
+##### Live Variable Analysis (Backward, union, ref->live def-> dead)
+- Dead code elimination, uninitialized variables, register and memory allocation
+- sem-live(n) ⊆ syn-live(n)
+- in-live(n) =  out-live(n) \ def (n)  ∪ ref (n)
+
+##### Available Expression (Forward, intersection, gen->available kill->) 
+- Redundant computation
+- sem-avail(n) ⊇ syn-avail(n)
+- out-avail(n) =  in-avail(n) ∪ gen(n)  \ kill(n)
+
+##### Reaching Definition (Forward, union)
+
+##### D-U and U-D chains (Use-Def, Def-Use)
+No needed when using SSA form
+
+
+
