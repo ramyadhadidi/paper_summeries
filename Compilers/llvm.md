@@ -22,35 +22,6 @@ All LLVM passes are subclasses of the _Pass_ class, which implement functionalit
 Some passes, which are machine independent, are invoked by _opt_. Other passes, which are machine dependent, are invoked by _llc_.
 
 
-###HW1
-#### Part1
-i) using `make`
 
-  1. g++ 4.8.4 / gcc 4.4.7
-    ```
-    O0 0m44.992s 
-    O3 0m58.518s
-    ```
-
-  2. Just replacing CC and CXX (clang 3.9.0)
-
-    ```
-    O0 3m34.327s
-    O3 8m58.510s
-    ```
-
-  Machine Info:
-  ```
-  Intel(R) Core(TM) i5-3550 CPU @ 3.30GHz
-  8.0 GB RAM
-  L3 6MB, L2 256KB, L1 32KB
-  Network File System
-  ```
-
-ii) 
-  - g++ O0 == 1m54.570s (79850153 bytes (77 MiB))
-  - g++ O3 == 2m13.245s (79850153 bytes (77 MiB))
-  - clang O3 == 3m27.060s (79850153 bytes (77 MiB))
-  - clang O3 == 1m53.830s (79850153 bytes (77 MiB))
 
 
