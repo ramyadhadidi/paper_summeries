@@ -17,6 +17,13 @@ An extended basic block is a maximal collection of basic blocks where:
 - only the first basic block can have multiple predecessor basic blocks;
 - all the other basic blocks have one single predecessor basic block, which must be within the collection of basic blocks.
 
+### DAG representation
+Contracted AST that shows sharing explicitly. It is good for: 
+  - local common subexpression
+  - dead code elimination (with live variable analysis) 
+  - strenght reduction 
+  - reordering
+
 
 
 
@@ -31,6 +38,9 @@ Dominator set node a **Dom(a)**: all nodes that dominates a
 ### Dominator Tree
 In a dominator tree the start node s is the root, and each
 node d dominates only its descendents in the tree.
+
+
+
 
 
 
@@ -70,6 +80,7 @@ A loop is a special region that has the following additional properties:
 
 
 
+
 ## Flow Analysis
  - Control Flow Analysis
  - Data Flow Analysis
@@ -92,5 +103,22 @@ it may be perfromed on different levels: source code, IR, target machine code
 ##### D-U and U-D chains (Use-Def, Def-Use)
 No needed when using SSA form
 
+##### Strenght reduction
+Replace expensive operations with cheaper ones.
+
+##### Induction Variables
+A induction variable is a variable if there is constant c such that each time x is assigned its value increases by c.
+```
+j=j-1
+t4 = j*4  --> t4 = t4-4
+```
 
 
+
+
+## SSA Form (Static Single-Assignment)
+It is form of IR that every value is assigned just once. Therefore, it is possible to have multiple values in SSA 
+pointing to a value in non-SSA format. So, we import &#934;(x,x,...,x) functions in every joint point for all variables 
+in non-SSA form, the size for parameters are number of predessesors.
+
+Simpilifes and make more effective: Constant Propagation, Value numbering, Invariant code motion, partial-redundancy elimination
