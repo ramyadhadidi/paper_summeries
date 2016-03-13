@@ -171,7 +171,8 @@ from the entry node to p, and there is not subsequent use of e after the last su
     - Note: Avalabilty is little different in this case. It inclueds anticipation as well, e.g. it could be mad available if
       we chose to compute it there.
     - earliest[B] = anticipated[B].in - available[B].in
- 3. ?
+ 3. Postpone expressions
+ 4. Clean-up
 
 
 
