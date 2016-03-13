@@ -150,6 +150,8 @@ We can create some new blocks along critical edges to do elimination for some ex
  - Loop-invariant code motion
  - strenght reduction
  - induction variable elimination
+    - derived from base
+    - derived from variables
 
 
 ## Lazy Code Motion
