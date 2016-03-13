@@ -98,6 +98,9 @@ it may be performed on different levels: source code, IR, target machine code
 - out-avail(n) =  in-avail(n) ∪ gen(n)  \ kill(n)
 
 ##### Very Busy Expressions (Backward, intersection)
+- Lazy code motion, code hoisting
+
+##### Postponable Expressions (Forward, intersection)
 - Lazy code motion
 
 ##### Reaching Definition (Forward, union)
@@ -157,10 +160,17 @@ We can create some new blocks along critical edges to do elimination for some ex
 
 
 ## Lazy Code Motion
-Compute a value as late as possible, therefore reducing register pressure. This can happen in PRE.
+Move a computation to earliest point to cover more redundant expressions. Then, compute the value as late as possible,
+therefore reducing register pressure. This can happen in PRE. Anticipation limits how early we can put an expression.
+
+_postponable expression_: e is postponable to a program point p if an early placement of e is ecountered along every path
+from the entry node to p, and there is not subsequent use of e after the last such placement.
 
  1. Find all very busy expressions.
  2. Place computation at very busy points. (earliest points are where expressions in anticipated but not available)
+    - Note: Avalabilty is little different in this case. It inclueds anticipation as well, e.g. it could be mad available if
+      we chose to compute it there.
+    - earliest[B] = anticipated[B].in - available[B].in
  3. ?
 
 
