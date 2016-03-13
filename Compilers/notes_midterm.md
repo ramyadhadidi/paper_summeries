@@ -95,6 +95,9 @@ it may be perfromed on different levels: source code, IR, target machine code
 - sem-avail(n) ⊇ syn-avail(n)
 - out-avail(n) =  in-avail(n) ∪ gen(n)  \ kill(n)
 
+##### Very Busy Expressions (Backward, intersection)
+- Lazy code motion
+
 ##### Reaching Definition (Forward, union)
 
 ##### D-U and U-D chains (Use-Def, Def-Use)
@@ -110,6 +113,8 @@ j=j-1
 t4 = j*4  --> t4 = t4-4
 ```
 
+
+
 <!--- ------------------------ --->
 ## Partial-Redundancy Elimination (PRE)
 Minimizing the number of expression evaluation that is called. 
@@ -118,13 +123,41 @@ Minimizing the number of expression evaluation that is called.
 
 _Partial_ means that this redundency is found in some pathes and not all of them.
 
-### Loop Invariant Code Motion
+### Loop Invariant Statements
+A statement is loop invariant if operands are:
+- Constant,
+- Have all reaching definitions outside loop, or
+- Have exactly one reaching definition, and that definition comes from an invariant statement
+
+#### Loop Invariant Code Motion
 If an expression is not redefined inside a loop we can move it outside the loop to reduce the number of recomputations.
 However, we should take care of cases when loop is not executed. Then:
  - the moved instruction will get executed and might throw and exception
  - if loop exits early, the optimized program may take longer
 
 Therefore, to solve this, compilers add another if condition before the while (or for).
+
+### Partial Subexpression Elimination
+It can be changed to common subexpression elimination by copying the evaluation to the not evaluation path.
+
+For more complex cases:
+
+**Critical Edge**: any edge from a node with two successors to a node with more than one predecessor. 
+
+We can create some new blocks along critical edges to do elimination for some expressions.
+
+## Loop Optimizations
+ - Loop-invariant code motion
+ - strenght reduction
+ - induction variable elimination
+
+
+## Lazy Code Motion
+Compute a value as late as possible, therefore reducing register pressure. This can happen in PRE.
+
+ 1. Find all very busy expressions.
+ 2. Place computation at very busy points. (earliest points are where expressions in anticipated but not available)
+ 3. ?
 
 <!--- ------------------------ --->
 ## SSA Form (Static Single-Assignment)
