@@ -104,6 +104,7 @@ it may be performed on different levels: source code, IR, target machine code
 - Lazy code motion
 
 ##### Reaching Definition (Forward, union)
+- Constant Folding, Constant Porpagation
 
 ##### D-U and U-D chains (Use-Def, Def-Use)
 No needed when using SSA form
