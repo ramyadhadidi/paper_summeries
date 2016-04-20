@@ -192,10 +192,10 @@ SSA form or any IR uses many temporaries to hold variables. This make optimizati
 we might have lesser registers than our temporaries number. Here, register allocation problem arises.
 
 To solve this, we use liveness analysis. The basic idea is that t1 and t2, if they are live at the same time, they cannot
-use same register. With this constraint, we build a register interference graph (__RIG__). Vertices represnet variables and
+use same register. With this constraint, we build a register interference graph (__RIG__). Vertices represent variables and
 edges represent those variables that are live at the same time.
 
-To solve the problem, we can translate this to graph coloring problem. Where we find the minumum number of colors to color
+To solve the problem, we can translate this to graph coloring problem. Where we find the minimum number of colors to color
 the vertices so that no neighbor vertices are not the same color. (NP-hard)
 
 Heuristic solution: consider we have k register.
