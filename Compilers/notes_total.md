@@ -184,3 +184,27 @@ pointing to a value in non-SSA format. So, we import &#934;(x,x,...,x) functions
 in non-SSA form, the size for parameters are number of predecessors.
 
 Simplifies and make more effective: Constant Propagation, Value numbering, Invariant code motion, partial-redundancy elimination
+
+
+<!-- **************************************************************************** -->
+## Register Allocation
+SSA form or any IR uses many temporaries to hold variables. This make optimizations easier. However, for code generation
+we might have lesser registers than our temporaries number. Here, register allocation problem arises.
+
+To solve this, we use liveness analysis. The basic idea is that t1 and t2, if they are live at the same time, they cannot
+use same register. With this constraint, we build a register interference graph (__RIG__). Vertices represnet variables and
+edges represent those variables that are live at the same time.
+
+To solve the problem, we can translate this to graph coloring problem. Where we find the minumum number of colors to color
+the vertices so that no neighbor vertices are not the same color. (NP-hard)
+
+Heuristic solution: consider we have k register.
+- First Part:
+  - pick a node t with less than k neighbor
+  - push it to stack
+  - remove it with its neighbor from RIG
+  - do until graph is empty
+- Second Part:
+  - pop stack
+  - color it so no neighbors are with same color
+  - pop until the stack is empty
