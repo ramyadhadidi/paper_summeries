@@ -1,11 +1,11 @@
 
-<!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:1 -->
+<!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
-1. [N1: Overview](#n1-overview)
-2. [N2: Performance Evaluation](#n2-performance-evaluation)
-		1. [Amdahl Law](#amdahl-law)
-		2. [Gustafson Law](#gustafson-law)
-3. [N3: Memory Hierarchies and Cache](#n3-memory-hierarchies-and-cache)
+- [N1: Overview](#n1-overview)
+- [N2: Performance Evaluation](#n2-performance-evaluation)
+		- [Amdahl Law](#amdahl-law)
+		- [Gustafson Law](#gustafson-law)
+- [N3: Memory Hierarchies and Cache](#n3-memory-hierarchies-and-cache)
 
 <!-- /TOC -->
 
