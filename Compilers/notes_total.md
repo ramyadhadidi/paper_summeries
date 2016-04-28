@@ -208,3 +208,13 @@ Heuristic solution: consider we have k register.
   - pop stack
   - color it so no neighbors are with same color
   - pop until the stack is empty
+
+### Spilling
+If we cannot use k registers to hold all values, we use memory. 
+When: 
+- All the nodes have k or more neighbor
+  - If we remove the first node, all the nodes has k neighbors
+
+We remove one node that has more than k neighbors, and save it to memory. Then try to allocate registers.
+
+
