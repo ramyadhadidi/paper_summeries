@@ -310,10 +310,15 @@ happen. Coherence means:
  3. Directory-based: one place to keep sharing state, works with point to point networks
 
 #### Snoopy Protocols
-BusActions:
+Bus Actions:
 	- GetS: Read Miss, intent is to share
 	- GetM: Read, may modify
 
+Coherence Write Policies:
+	- Write-Update
+	- Write-Invalidate
+
+![States](https://github.com/ramyadhadidi/summeries/blob/master/High_Performance_Computer_Architecture/coh1.png)
 ![Coh1](https://github.com/ramyadhadidi/summeries/blob/master/High_Performance_Computer_Architecture/coh1.png)
 ![Coh2](https://github.com/ramyadhadidi/summeries/blob/master/High_Performance_Computer_Architecture/coh2.png)
 ![Coh3](https://github.com/ramyadhadidi/summeries/blob/master/High_Performance_Computer_Architecture/coh3.png)
