@@ -18,10 +18,19 @@
 		- [Solve Data Hazards](#solve-data-hazards)
 		- [Solve Control Hazards](#solve-control-hazards)
 - [N5: ILP](#n5-ilp)
+	- [SuperScaler](#superscaler)
+		- [Approaches for Scheduling](#approaches-for-scheduling)
+			- [Simple Interlocking (FICO)](#simple-interlocking-fico)
+			- [Tomasulo's Algorithm (FOCO)](#tomasulos-algorithm-foco)
+			- [RAT](#rat)
+			- [RAT vs. Tomasulo](#rat-vs-tomasulo)
+		- [State Update](#state-update)
+			- [Solution 0.5: ROB](#solution-05-rob)
+			- [Solution 1: ROB w/bypass](#solution-1-rob-wbypass)
+			- [Solution 2: Future File](#solution-2-future-file)
+			- [Solution 3: Checkpoint Repair](#solution-3-checkpoint-repair)
 
-<!-- /TOC -->
-
-HPCA Summery
+<!-- /TOC -->HPCA Summery
 
 This is summery for cs6290 taught by Tom Conte. I use this to review the most important concepts/terms in architecture.
 
