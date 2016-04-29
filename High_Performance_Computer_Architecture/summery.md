@@ -318,7 +318,7 @@ Coherence Write Policies:
 	- Write-Update
 	- Write-Invalidate
 
-![States](https://github.com/ramyadhadidi/summeries/blob/master/High_Performance_Computer_Architecture/coh1.png)
+![States](https://github.com/ramyadhadidi/summeries/blob/master/High_Performance_Computer_Architecture/states.png)
 ![Coh1](https://github.com/ramyadhadidi/summeries/blob/master/High_Performance_Computer_Architecture/coh1.png)
 ![Coh2](https://github.com/ramyadhadidi/summeries/blob/master/High_Performance_Computer_Architecture/coh2.png)
 ![Coh3](https://github.com/ramyadhadidi/summeries/blob/master/High_Performance_Computer_Architecture/coh3.png)
