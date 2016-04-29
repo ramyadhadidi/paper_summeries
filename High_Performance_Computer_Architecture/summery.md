@@ -29,8 +29,15 @@
 			- [Solution 1: ROB w/bypass](#solution-1-rob-wbypass)
 			- [Solution 2: Future File](#solution-2-future-file)
 			- [Solution 3: Checkpoint Repair](#solution-3-checkpoint-repair)
+	- [VLIW](#vliw)
+- [N6: Multiprocessing and Multithreading](#n6-multiprocessing-and-multithreading)
+	- [Shared Memory](#shared-memory)
 
-<!-- /TOC -->HPCA Summery
+<!-- /TOC -->
+
+-----------------------------------------------------
+
+HPCA Summery
 
 This is summery for cs6290 taught by Tom Conte. I use this to review the most important concepts/terms in architecture.
 
@@ -264,3 +271,28 @@ scheme.
 
 #### Solution 3: Checkpoint Repair
 Mark an instruction barrier. We have three regFiles: messy, backup1, backup2
+
+## VLIW
+Perform dependence check offline (compilers) and then schedule instructions
+in _very long instruction words (VLIW)_. We could end up in NOP (vertical
+and horizontal). Use stop bit to end horizontal VLIWs, use pause bit to show
+how many cycles to wait for vertical nops.
+
+Compilers play central role in scheduling of instructions. There are
+multiple compiler techniques. (Global, local, cyclic, acyclic)
+
+We can do cyclic scheduling using Iterative Modulo Scheduling by finding
+_ResMII_ and _RecMII_. More on slides.
+
+# N6: Multiprocessing and Multithreading
+A SPMD (single program single data) in Flynn's taxonomy.
+
+Interconnect:
+- Bus
+- Point to point
+
+Programmer's memory:
+- Shared memory (coherence)
+- Non-shared (message passing)
+
+## Shared Memory
