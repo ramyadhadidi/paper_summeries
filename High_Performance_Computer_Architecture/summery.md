@@ -188,4 +188,4 @@ Speedup = n / (1+stall)
  - __Scalar__ 1 Inst/Cycle and  __superscalar__ N Inst/Cycle
 
 ## SuperScaler
-![View of SuperScalar]()
+![View of SuperScalar](https://github.com/ramyadhadidi/summeries/blob/master/High_Performance_Computer_Architecture/superscalar.png)
