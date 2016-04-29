@@ -32,6 +32,8 @@
 	- [VLIW](#vliw)
 - [N6: Multiprocessing and Multithreading](#n6-multiprocessing-and-multithreading)
 	- [Shared Memory](#shared-memory)
+		- [Schemes](#schemes)
+			- [Snoopy Protocols](#snoopy-protocols)
 
 <!-- /TOC -->
 
@@ -296,3 +298,22 @@ Programmer's memory:
 - Non-shared (message passing)
 
 ## Shared Memory
+Since we have one memory and multiple private caches, stale values can
+happen. Coherence means:
+- A processor can read what it wrote
+- All write are globally seen eventually
+- All writes are ordered globally in the system
+
+### Schemes
+ 1. Shared cache: not scalable
+ 2. Snooping: need broadcast network
+ 3. Directory-based: one place to keep sharing state, works with point to point networks
+
+#### Snoopy Protocols
+BusActions:
+	- GetS: Read Miss, intent is to share
+	- GetM: Read, may modify
+
+![Coh1](https://github.com/ramyadhadidi/summeries/blob/master/High_Performance_Computer_Architecture/coh1.png)
+![Coh2](https://github.com/ramyadhadidi/summeries/blob/master/High_Performance_Computer_Architecture/coh2.png)
+![Coh3](https://github.com/ramyadhadidi/summeries/blob/master/High_Performance_Computer_Architecture/coh3.png)
