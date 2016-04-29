@@ -188,4 +188,60 @@ Speedup = n / (1+stall)
  - __Scalar__ 1 Inst/Cycle and  __superscalar__ N Inst/Cycle
 
 ## SuperScaler
+Multiple functional units, multiple ports for caches, parallel I$,
+multi ported RegFile, and dependency check hardware
+
+
 ![View of SuperScalar](https://github.com/ramyadhadidi/summeries/blob/master/High_Performance_Computer_Architecture/superscalar.png)
+
+### Approaches for Scheduling
+ - Fire (issue) either in order(I) or out of order (O)
+ - Complete either in order (I) or other of order (O)
+ - Classifications:
+ 	- FICI (5-stage pipeline)
+	- FICO (Cray-1)
+
+#### Simple Interlocking (FICO)
+- add register file table (reg, busy, value)
+- add scoreboard (FU, busy)
+- add scheduling queue (FU, src1, src2, dest)
+
+Continue firing until see a busy. Now we can take care of dependencies while
+executing instructions parallel in different FUs.
+
+#### Tomasulo's Algorithm (FOCO)
+ - Scheduling queue in dispatch becomes _Reservation Stations_
+ - Announcements are made using _Common Data Bus_ (CDB)
+ - Use RS and CDB to rename registers (recall IPC ~ #regs)
+ - regFile (reg, tag, ready, value)
+ 	- in dispatch assign tags to dest registers in program order
+	- add tag field to RS, CDB and regFile
+	- removes WAW and WAR data dependencies
+
+#### RAT
+Instead of tags use real registers:
+ - Pregs (Actual implemented registers)
+ - Aregs (ISA regs)
+ - We just save Pregs, we use a table _Register Alias Table_ (RAS) to
+ 	do the translations
+
+Architecture:
+ - RS: FU, Dest AReg, Dest PReg, Src1 PReg, Src2 PReg
+ - RAT: AReg -> PReg
+ - RegFile: PReg, Pending Free, Free, Ready, #Uses, Value
+ - CDB: Just from FUs to RegFile
+
+#### RAT vs. Tomasulo
+- no associative lookup in scheduling queue
+- no broadcast to listen
+- Tomasulo does not check regFile for all sources every cycle
+
+### State Update
+We should be able to roll back to a state if something happens. Something
+like Fault, Trap or Exception.
+
+#### Solution 0.5: ROB
+Issue: Head of ROB retirement make all instructions to wait (program order
+	retirement)
+
+#### Solution 1: ROB w/bypass
