@@ -241,7 +241,17 @@ We should be able to roll back to a state if something happens. Something
 like Fault, Trap or Exception.
 
 #### Solution 0.5: ROB
-Issue: Head of ROB retirement make all instructions to wait (program order
+All tag broadcasts happens at retirements
+Issues:
+- Head of ROB retirement make all instructions to wait (program order
 	retirement)
 
 #### Solution 1: ROB w/bypass
+Add comparators to search ROB and therefore retire sooner.
+
+#### Solution 2: Future File
+Use two regFiles, one messy, one ROB ordered. This is the common implemented
+scheme.
+
+#### Solution 3: Checkpoint Repair
+Mark an instruction barrier. We have three regFiles: messy, backup1, backup2
