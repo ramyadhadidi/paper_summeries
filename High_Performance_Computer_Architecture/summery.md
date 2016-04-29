@@ -1,11 +1,23 @@
-
-<!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:0 orderedList:0 -->
+<!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
 - [N1: Overview](#n1-overview)
 - [N2: Performance Evaluation](#n2-performance-evaluation)
-  - [Amdahl Law](#amdahl-law)
-  - [Gustafson Law](#gustafson-law)
-- [N3: Memory Hierarchies and Cache](#n3-memory-hierarchies-and-cache)
+	- [Laws](#laws)
+		- [Amdahl's Law](#amdahls-law)
+		- [Gustafson's Law](#gustafsons-law)
+		- [Moor's Law](#moors-law)
+- [N3: Memory Hierarchies and Caches](#n3-memory-hierarchies-and-caches)
+	- [Caches](#caches)
+		- [Cache Timing](#cache-timing)
+		- [Cache Replacements](#cache-replacements)
+		- [Cache Write Strategy](#cache-write-strategy)
+		- [Type of Misses](#type-of-misses)
+		- [Improving Cache Performance](#improving-cache-performance)
+- [N4: Pipelining](#n4-pipelining)
+	- [Hazards](#hazards)
+		- [Solve Data Hazards](#solve-data-hazards)
+		- [Solve Control Hazards](#solve-control-hazards)
+- [N5: ILP](#n5-ilp)
 
 <!-- /TOC -->
 
@@ -13,6 +25,8 @@ HPCA Summery
 
 This is summery for cs6290 taught by Tom Conte. I use this to review the most important concepts/terms in architecture.
 
+
+<!-- --------------------------------------------- -->
 # N1: Overview
 Techniques to speedup:
 - Speculation
@@ -31,6 +45,8 @@ Moor's Law: 2X transistor each 18 Month.
   - 1995 stop of exp. transistor improvements
   - 2005 ILP ended with Prescott
 
+
+<!-- --------------------------------------------- -->
 # N2: Performance Evaluation
 
 RunTime = IC * CPI * CT
@@ -42,7 +58,8 @@ RISC vs. CISC = (IC>, CPI<, CT<) vs. (IC<, CPI>, CT>)
 
 _Amean_ for runtime / _Hmean_ for rates (IPC)
 
-### Amdahl Law
+## Laws
+### Amdahl's Law
 Speedup is limited by the part you cannot improve
 - F: Fraction of original runtime that can be enhanced. 80%?
 - S: How much can you parallelized. 100,000?
@@ -51,13 +68,18 @@ Speedup is limited by the part you cannot improve
  - SpeedUp(Ideal) = 1 / (1-F)  ::  1/0.2 = 5
  - SpeedUp = 1 / (1-F) + F/S
 
-### Gustafson Law
+### Gustafson's Law
 Looks from other perspective, parallel programs. (Must keep CPUs busy)
 - a: Fraction of parallel program that is sequential
 - P: P processors
 
 - SpeedUp = P - a(P-1)
 
+### Moor's Law
+2x Transistors / 18 Month
+
+
+<!-- --------------------------------------------- -->
 # N3: Memory Hierarchies and Caches
 Locality:
 - Temporal
@@ -128,6 +150,42 @@ Improving via: HT, MR or MP
   - L2 cache
   - Subblocking (Reduces Tag size)
 - Hit Time Reduction
-  - Access TLB in parallel
+  - Access TLB in parallel (Virtually indexed, physically tagged)
   - Simple Cache
   - Pipeline Writes
+
+
+<!-- --------------------------------------------- -->
+# N4: Pipelining
+Speedup = n / (1+stall)
+- n: pipeline depth
+- stall: average number of stalls per instruction
+
+## Hazards
+- Data
+	- RAW, WAR, WAW
+- Structural (Hardware resources)
+- Control
+	- Branch
+
+### Solve Data Hazards
+ - Data Forwarding
+ - Load-use hazard (load x and the use it, common)
+
+### Solve Control Hazards
+- Branch Target Buffer
+- 2bit predictor (Smith, biomodal)
+- GShare (2Mux one for History, one for PC)
+- GSelect (1Mux hash history and PC)
+- Yeh/Patt (History table for each PC selects pattern table entry)
+- Hybrid (Competition)
+
+
+<!-- --------------------------------------------- -->
+# N5: ILP
+ - Flynn's Bottleneck for Pipelining: CPI>=1
+ - reduce CT further, but cannot do it forever (Latch overhead, logic)
+ - __Scalar__ 1 Inst/Cycle and  __superscalar__ N Inst/Cycle
+
+## SuperScaler
+![View of SuperScalar]()
