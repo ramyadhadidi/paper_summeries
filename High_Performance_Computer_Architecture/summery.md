@@ -32,8 +32,26 @@
 	- [VLIW](#vliw)
 - [N6: Multiprocessing and Multithreading](#n6-multiprocessing-and-multithreading)
 	- [Shared Memory](#shared-memory)
-		- [Schemes](#schemes)
+		- [Sharing Patterns](#sharing-patterns)
+			- [False Sharing](#false-sharing)
+		- [Managing Shared Memory Schemes](#managing-shared-memory-schemes)
 			- [Snoopy Protocols](#snoopy-protocols)
+			- [Directory-Based Cache Coherence](#directory-based-cache-coherence)
+				- [Limited Pointer Scheme](#limited-pointer-scheme)
+				- [Stanford Distributed Directory Schemes (SDD)](#stanford-distributed-directory-schemes-sdd)
+				- [Scalable Coherent Interface (SCI)](#scalable-coherent-interface-sci)
+- [N7: Synchronization and Consistency](#n7-synchronization-and-consistency)
+	- [Synchronization](#synchronization)
+		- [Mutex Implementations](#mutex-implementations)
+		- [Barrier Implementations](#barrier-implementations)
+	- [Consistency](#consistency)
+		- [Strict Consistency](#strict-consistency)
+		- [Sequential Consistency](#sequential-consistency)
+		- [Relaxed Consistency Models](#relaxed-consistency-models)
+			- [Weak Consistency](#weak-consistency)
+			- [Release Consistency](#release-consistency)
+- [N8: Interconnects](#n8-interconnects)
+	- [Torus/Mesh](#torusmesh)
 
 <!-- /TOC -->
 
@@ -286,6 +304,8 @@ multiple compiler techniques. (Global, local, cyclic, acyclic)
 We can do cyclic scheduling using Iterative Modulo Scheduling by finding
 _ResMII_ and _RecMII_. More on slides.
 
+
+<!-- --------------------------------------------- -->
 # N6: Multiprocessing and Multithreading
 A SPMD (single program single data) in Flynn's taxonomy.
 
@@ -304,28 +324,62 @@ happen. Coherence means:
 - All write are globally seen eventually
 - All writes are ordered globally in the system
 
-### Schemes
+### Sharing Patterns
+- Private
+- Read-only
+- Migratory
+- Write-shared
+- Producer/Consumer
+- General
+
+#### False Sharing
+Granularity of sharing is cache block size. So, it is possible that a
+block has different sharing patterns for its variables. This will
+cause false sharing because protocols fails to work effectively.
+
+
+### Managing Shared Memory Schemes
  1. Shared cache: not scalable
  2. Snooping: need broadcast network
  3. Directory-based: one place to keep sharing state, works with point to point networks
 
 #### Snoopy Protocols
 Bus Actions:
-	- GetS: Read Miss, intent is to share
-	- GetM: Read, may modify
+- GetS: Read Miss, intent is to share
+- GetM: Read, may modify
 
 Coherence Write Policies:
-	- Write-Update
-	- Write-Invalidate
+- Write-Update
+- Write-Invalidate
 
 ![States](https://github.com/ramyadhadidi/summeries/blob/master/High_Performance_Computer_Architecture/states.png)
+
 ![Coh1](https://github.com/ramyadhadidi/summeries/blob/master/High_Performance_Computer_Architecture/coh1.png)
+
 ![Coh2](https://github.com/ramyadhadidi/summeries/blob/master/High_Performance_Computer_Architecture/coh2.png)
+
 ![Coh3](https://github.com/ramyadhadidi/summeries/blob/master/High_Performance_Computer_Architecture/coh3.png)
 
+#### Directory-Based Cache Coherence
+Keep a directory in main memory. (K-presence bit, 1 dirty bit). The main issue is that directory will become
+the new bottleneck.
+
+- Directory Size = (P + overhead) * (MemorySize/2^B)
+- Overhead: depends on protocol. Note: O and E states need the processor number as well.
+
+##### Limited Pointer Scheme
+Keep a pointer of which processor has the data and its state. In case of overflow, invalidate. (or) There are many modes in
+case of overflow. (Broadcast, no Broadcast, MultiCast)
+
+##### Stanford Distributed Directory Schemes (SDD)
+Instead of keeping the directory in memory, keep in in caches. Memory just keeps the head pointer of that block.
+It works like linked list, different operations for getS and getM.
+
+##### Scalable Coherent Interface (SCI)
+This is like SDD but with double-linked list. Easier for block eviction updates.
 
 
-Conflict RAMYAD****
+<!-- --------------------------------------------- -->
 # N7: Synchronization and Consistency
 
 ## Synchronization
