@@ -322,3 +322,76 @@ Coherence Write Policies:
 ![Coh1](https://github.com/ramyadhadidi/summeries/blob/master/High_Performance_Computer_Architecture/coh1.png)
 ![Coh2](https://github.com/ramyadhadidi/summeries/blob/master/High_Performance_Computer_Architecture/coh2.png)
 ![Coh3](https://github.com/ramyadhadidi/summeries/blob/master/High_Performance_Computer_Architecture/coh3.png)
+
+
+
+Conflict RAMYAD****
+# N7: Synchronization and Consistency
+
+## Synchronization
+When using shared memory need to coordinate. Two types of synchronization:
+- Barriers (Wait for all threads to reach to a place)
+- Mutex (Make sure only one thread have access to a critical region)
+- Alternative Solution: _Transactions_
+
+### Mutex Implementations
+- Test and Set (a spin lock, lots of getM)
+- Test and Test and Set
+- Tree locks (lock has levels so competition to get the lock is lesser)
+- Queuing locks (Threads add themselves to a queue, finished thread wakes up the following)
+- Reader writer locks (lock for readers are free, but writers should wait)
+
+### Barrier Implementations
+- Simple counter
+- Tree barriers (counter becomes bottleneck in large-scale systems, use trees)
+- 1-hot (single bit for each processor)
+- more hardware supported (Load Linked (LL) and Store Conditional (SC))
+
+## Consistency
+- Coherence: Ordering parallel accesses to _same addresses_.
+- Consistency: Ordering parallel accesses to _different addresses_.
+
+### Strict Consistency
+- The accesses by each processor were kept in-order (no R/W reordering)
+- The accesses between different processors are ordered by _global clock_.
+- The order is seen by everyone
+
+### Sequential Consistency
+- The accesses by each processor were kept in-order (no R/W reordering)
+- The accesses between different processors were arbitrarily interleaved.
+- The same order is seen by everyone
+
+### Relaxed Consistency Models
+Feature the bug and make the programmer's problem! Without data races they work just fine. But
+with data races, the problem shows up.
+
+#### Weak Consistency
+- All syncs are sequentially consistent
+- All write should be completed before a sync access
+- No data access are allowed while we a sync access
+Bad: all W/R before a sync should be completed, but we just care for critical sections variables
+
+#### Release Consistency
+- Acquire and releases are sequentially consistent
+- Before a non-sync read, all acquires should be done
+- Before a release, all R/W by the mutex-owning processor should be done
+
+# N8: Interconnects
+- Flits: Flow-Control Digits
+- one packet = multiple flits
+
+Topologies:
+- Direct vs. Indirect
+- Shared vs. Point to Point
+
+## Torus/Mesh
+K-array n-Torus:
+- n dimensions
+- Total nodes = K^n
+- __Ring__ is when n=1
+
+Torus vs Mesh:
+- Each dimension of a torus has K nodes connected in a ring
+- Each dimension of a mesh has K nodes connected in a line (first and last nodes not connected)
+
+Rest is basic network concepts: routing, flow control, virtual channels
