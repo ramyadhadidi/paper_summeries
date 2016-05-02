@@ -28,6 +28,7 @@
 	- [SSA Form (Static Single-Assignment)](#ssa-form-static-single-assignment)
 		- [Construction (Maximal SSA)](#construction-maximal-ssa)
 		- [Construction (Minimal SSA)](#construction-minimal-ssa)
+			- [Summery](#summery)
 		- [Data Flow optimizations with SSA](#data-flow-optimizations-with-ssa)
 			- [Dead Code Elimination](#dead-code-elimination)
 	- [Value Numbering](#value-numbering)
@@ -264,6 +265,20 @@ which is:
 
 So we find DF&#8734; for all basic blocks that a variable is defined, and then
 insert the &#934; functions there.
+
+After this we need to do variable renaming using a stacked-based algorithm. All lhs
+should be subscripted, all rhs, use appropriate subscript.
+
+After this, solve reaching definition to find what to put in &#934; functions.
+
+#### Summery
+In summery these are the steps:
+1. Calculate Dominance Frontier for each variable, this is where we insert &#934; functions.
+	- Find DF local
+	- Find DF up
+	- Find DF &#8734;
+2. Rename variables
+3. Solve reaching definition to populate &#934; functions inputs.
 
 ### Data Flow optimizations with SSA
 
