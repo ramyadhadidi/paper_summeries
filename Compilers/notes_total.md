@@ -273,6 +273,7 @@ After this, solve reaching definition to find what to put in &#934; functions.
 
 #### Summery
 In summery these are the steps:
+
 1. Calculate Dominance Frontier for each variable, this is where we insert &#934; functions.
 	- Find DF local
 	- Find DF up
