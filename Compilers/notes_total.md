@@ -251,6 +251,10 @@ __Minimal SSA__ can be generated using Dominance Frontier.
 __Dominance Frontier__: _DF(x)_ is the set of all nodes _y_ in the flow-graph x dominates an
 immediate predecessor of _y_ but does not strictly dominates _y_.
 
+Calculating DF(x) is quadratic in the number of nodes.
+
+![DFx](https://github.com/ramyadhadidi/summeries/blob/master/Compilers/DFx.jpg)
+
 ### Data Flow optimizations with SSA
 
 #### Dead Code Elimination
