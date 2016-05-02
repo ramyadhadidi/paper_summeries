@@ -1,3 +1,46 @@
+<!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
+
+- [Compiler Notes](#compiler-notes)
+	- [Basic blocks](#basic-blocks)
+		- [Extended Basic Block](#extended-basic-block)
+		- [DAG representation](#dag-representation)
+	- [Dominators](#dominators)
+		- [Dominator Tree](#dominator-tree)
+	- [Loops](#loops)
+		- [Strongly-connected component (SCC)](#strongly-connected-component-scc)
+		- [Back-edges](#back-edges)
+	- [Regions](#regions)
+	- [Flow Analysis](#flow-analysis)
+				- [Live Variable Analysis (Backward, union, ref->live def-> dead)](#live-variable-analysis-backward-union-ref-live-def-dead)
+				- [Available Expression (Forward, intersection, gen->available kill->)](#available-expression-forward-intersection-gen-available-kill-)
+				- [Very Busy Expressions (Backward, intersection)](#very-busy-expressions-backward-intersection)
+				- [Postponable Expressions (Forward, intersection)](#postponable-expressions-forward-intersection)
+				- [Reaching Definition (Forward, union)](#reaching-definition-forward-union)
+				- [D-U and U-D chains (Use-Def, Def-Use)](#d-u-and-u-d-chains-use-def-def-use)
+				- [Strength reduction](#strength-reduction)
+				- [Induction Variables](#induction-variables)
+	- [Partial-Redundancy Elimination (PRE)](#partial-redundancy-elimination-pre)
+		- [Loop Invariant Statements](#loop-invariant-statements)
+			- [Loop Invariant Code Motion](#loop-invariant-code-motion)
+		- [Partial Subexpression Elimination](#partial-subexpression-elimination)
+	- [Loop Optimizations](#loop-optimizations)
+	- [Lazy Code Motion](#lazy-code-motion)
+	- [SSA Form (Static Single-Assignment)](#ssa-form-static-single-assignment)
+		- [Construction (Maximal SSA)](#construction-maximal-ssa)
+		- [Construction (Minimal SSA)](#construction-minimal-ssa)
+		- [Data Flow optimizations with SSA](#data-flow-optimizations-with-ssa)
+			- [Dead Code Elimination](#dead-code-elimination)
+	- [Value Numbering](#value-numbering)
+		- [Local Value Numbering](#local-value-numbering)
+		- [Global Value Numbering (GVN)](#global-value-numbering-gvn)
+	- [Register Allocation](#register-allocation)
+		- [Spilling](#spilling)
+
+<!-- /TOC -->
+
+
+
+# Compiler Notes
 
 <!-- **************************************************************************** -->
 ## Basic blocks
@@ -5,7 +48,7 @@ Three rules to find the leaders:
   - first statement
   - target of a branch
   - fall-through
-  
+
 There is an edge between basic blocks if (i) branch, (ii) immediately follows
 
 **Points**: between statements
@@ -19,10 +62,10 @@ An extended basic block is a maximal collection of basic blocks where:
 - all the other basic blocks have one single predecessor basic block, which must be within the collection of basic blocks.
 
 ### DAG representation
-Contracted AST that shows sharing explicitly. It is good for: 
+Contracted AST that shows sharing explicitly. It is good for:
   - local common subexpression
-  - dead code elimination (with live variable analysis) 
-  - strenght reduction 
+  - dead code elimination (with live variable analysis)
+  - strenght reduction
   - reordering
 
 
@@ -50,14 +93,14 @@ SCC: A subgraph that there is path from each node to every node.
 
 How to find them: [here](https://www.youtube.com/watch?v=ju9Yk7OOEb8)
 
-A strongly-connected component G’ = (N’, E’, s’) of a flow-graph G = (N, E, s) is a 
+A strongly-connected component G’ = (N’, E’, s’) of a flow-graph G = (N, E, s) is a
 **loop** with entry s’ if s’ dominates all nodes in N’.
 
 ### Back-edges
 
 An edge (b,a) of a flow-graph G is a back edge if a dominates b, a < b.
 
-**Natural Loops**: Given a back edge (b,a), a natural loop associated with (b,a) 
+**Natural Loops**: Given a back edge (b,a), a natural loop associated with (b,a)
 with entry in node a is the subgraph formed by a plus all nodes that can reach b without going through a.
 
 How to:
@@ -83,7 +126,7 @@ A loop is a special region that has the following additional properties:
 ## Flow Analysis
  - Control Flow Analysis
  - Data Flow Analysis
- 
+
 __Code optimization__: a program transformation that preserves correctness and improves performance.
 it may be performed on different levels: source code, IR, target machine code
 
@@ -92,7 +135,7 @@ it may be performed on different levels: source code, IR, target machine code
 - sem-live(n) ⊆ syn-live(n)
 - in-live(n) =  out-live(n) \ def (n)  ∪ ref (n)
 
-##### Available Expression (Forward, intersection, gen->available kill->) 
+##### Available Expression (Forward, intersection, gen->available kill->)
 - Redundant computation, CSE (common subexpression elimination)
 - sem-avail(n) ⊇ syn-avail(n)
 - out-avail(n) =  in-avail(n) ∪ gen(n)  \ kill(n)
@@ -123,7 +166,7 @@ t4 = j*4  --> t4 = t4-4
 
 <!-- **************************************************************************** -->
 ## Partial-Redundancy Elimination (PRE)
-Minimizing the number of expression evaluation that is called. 
+Minimizing the number of expression evaluation that is called.
  - Subexpression(common & partial)
  - loop-invariant expression
 
@@ -148,7 +191,7 @@ It can be changed to common subexpression elimination by copying the evaluation 
 
 For more complex cases:
 
-**Critical Edge**: any edge from a node with two successors to a node with more than one predecessor. 
+**Critical Edge**: any edge from a node with two successors to a node with more than one predecessor.
 
 We can create some new blocks along critical edges to do elimination for some expressions.
 
@@ -179,11 +222,66 @@ from the entry node to p, and there is not subsequent use of e after the last su
 
 <!-- **************************************************************************** -->
 ## SSA Form (Static Single-Assignment)
-It is form of IR that every value is assigned just once. Therefore, it is possible to have multiple values in SSA 
-pointing to a value in non-SSA format. So, we import &#934;(x,x,...,x) functions in every joint point for all variables 
+It is form of IR that every value is assigned just once. Therefore, it is possible to
+have multiple values in SSA
+pointing to a value in non-SSA format. So, we import &#934;(x,x,...,x) functions in every
+joint point for all variables
 in non-SSA form, the size for parameters are number of predecessors.
 
-Simplifies and make more effective: Constant Propagation, Value numbering, Invariant code motion, partial-redundancy elimination
+Simplifies and make more effective: Constant Propagation, Value numbering,
+Invariant code motion, partial-redundancy elimination.
+
+### Construction (Maximal SSA)
+- Insert &#934; function at every joint for every name
+- Solve reaching definition
+- Rename each use to the def that reaches it
+
+This will build __Maximal SSA__ which has too many unnecessary &#934; functions.
+
+### Construction (Minimal SSA)
+__Minimal SSA__ can be generated using Dominance Frontier.
+
+__Dominance Frontier__: _DF(x)_ is the set of all nodes _y_ in the flow-graph x dominates an
+immediate predecessor of _y_ but does not strictly dominates _y_.
+
+### Data Flow optimizations with SSA
+
+#### Dead Code Elimination
+- similar to mark and sweep
+- start with critical operations (I/O, entry & exit, return values, calls)
+- uses post-dominator to rewrite branches
+- uses RDF to mark block-ending branch
+
+<!-- **************************************************************************** -->
+## Value Numbering
+Give numbers to symbolic values, find equal expressions.
+- take algebraic identities into account (x=x*1)
+- take commutativity (a+b=b+a)
+
+### Local Value Numbering
+How it works:
+- implement a hash table
+- for x+y, get their value numbers xv,xy
+- look for (+,xv,xy)
+- if there:
+	- replace the computation by the reference
+- if not:
+	- if it has lhs (left-hand assignment)
+		- assign the value number to it
+	- else
+		- create a temporary variable
+		- assign the value number to it
+
+How about redefined cases:
+- z=x+y, z=w, v=x+y
+- Options:
+	1. every time create a temporary
+	2. use SSA
+	3. remove all hash table entries that uses lhs
+
+It can be mixed to cover constant propagation/folding as well.
+
+### Global Value Numbering (GVN)
 
 
 <!-- **************************************************************************** -->
@@ -210,11 +308,9 @@ Heuristic solution: consider we have k register.
   - pop until the stack is empty
 
 ### Spilling
-If we cannot use k registers to hold all values, we use memory. 
-When: 
+If we cannot use k registers to hold all values, we use memory.
+When:
 - All the nodes have k or more neighbor
   - If we remove the first node, all the nodes has k neighbors
 
 We remove one node that has more than k neighbors, and save it to memory. Then try to allocate registers.
-
-
