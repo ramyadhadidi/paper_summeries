@@ -252,8 +252,15 @@ __Dominance Frontier__: _DF(x)_ is the set of all nodes _y_ in the flow-graph x 
 immediate predecessor of _y_ but does not strictly dominates _y_.
 
 Calculating DF(x) is quadratic in the number of nodes.
+Here is the optimal algorithm for finiding DF(x):
 
 ![DFx](https://github.com/ramyadhadidi/summeries/blob/master/Compilers/DFx.jpg)
+
+After this we might find where to insert &#934; functions partially. Because there
+would exist some paths in future that joins. So We need __Iterated Dominator Frontier__
+which is:
+
+![DFx2](https://github.com/ramyadhadidi/summeries/blob/master/Compilers/DFx2.jpg)
 
 ### Data Flow optimizations with SSA
 
