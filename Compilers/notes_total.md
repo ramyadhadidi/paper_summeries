@@ -35,6 +35,13 @@
 		- [Global Value Numbering (GVN)](#global-value-numbering-gvn)
 	- [Register Allocation](#register-allocation)
 		- [Spilling](#spilling)
+	- [Dependency](#dependency)
+		- [Data Dependency](#data-dependency)
+			- [Classification](#classification)
+			- [Bernstein's Conditions](#bernsteins-conditions)
+			- [Loop Dependency](#loop-dependency)
+				- [Terms and Theory](#terms-and-theory)
+				- [Dependence Testing](#dependence-testing)
 
 <!-- /TOC -->
 
@@ -259,6 +266,8 @@ Give numbers to symbolic values, find equal expressions.
 - take commutativity (a+b=b+a)
 
 ### Local Value Numbering
+Data structure: Hash Table
+
 How it works:
 - implement a hash table
 - for x+y, get their value numbers xv,xy
@@ -282,6 +291,14 @@ How about redefined cases:
 It can be mixed to cover constant propagation/folding as well.
 
 ### Global Value Numbering (GVN)
+Data structure: Value Graph
+
+__Congruent__: Two variables are congruent iff their definitions have identical
+operators and congruent operands.
+
+Two values are equivalent iff at point P:
+- they are congruent
+- their defining assignments dominate P
 
 
 <!-- **************************************************************************** -->
@@ -314,3 +331,58 @@ When:
   - If we remove the first node, all the nodes has k neighbors
 
 We remove one node that has more than k neighbors, and save it to memory. Then try to allocate registers.
+
+<!-- **************************************************************************** -->
+## Dependency
+Two type of dependency:
+- Data: our focus
+- Control
+
+### Data Dependency
+There is data dependency from s1 to s2 if :
+- both access the same memory location and at least one of them writes to it
+- there is feasible run-time path from s1 to s2
+
+It is heavily used for loop parallelizing. It also arises in many architectures, Vector processors,
+SIMD and CMPs.
+
+#### Classification
+- True (RAW)
+- Anti (WAR)
+- Output (WAW)
+
+#### Bernstein's Conditions
+For dependency between iterations:
+- i1 and i2 does not (read-write, write-read, write-write) to same location
+
+#### Loop Dependency
+Like data-dependency but between loop iterations: Two statements with two iteration vector
+i and j such that i<j and they access same memory locations which at least one of them is a write.
+
+We can reorder a loop as long as we preserves all dependencies.
+
+Type of loop dependencies:
+1. Loop-Independent: dependency exist but for iteration vector i=j
+2. Loop-Carried: different iteration vectors. S1 depends on S2.
+	- Forward: S2 appears after S1
+	- Backward: S2 appears before S1 (or if S1=S2)
+
+##### Terms and Theory
+- _Iteration Vector_
+- _Dependence Distance Vector_: From S1 to S2; d(i,j) = j - i
+- _Dependence Direction Vector_: (<,=,>) :: source ? sink :: actually the sign of Distance Vector
+	- <: legal
+	- =: Loop-Independent dependence
+	- >: illegal for single loop, legal of leftmost is a <
+	- \*: shown it is possible to have multiple kind of dependencies
+- _Level of a dependency_: subscript number of leftmost non-= component
+
+Preserving all level-k dependence in Transforms:
+ - Preserving iteration order of level k
+ - does not interchange any loop with level<k inside the level-k loop
+ - does not interchange any loop with level>k outside the level-k loop
+
+Preserving Loop-Independent dependence:
+ - A transform preserves the dependency if does not move instances between iterations, and relative order of statements.
+
+##### Dependence Testing
