@@ -262,6 +262,9 @@ which is:
 
 ![DFx2](https://github.com/ramyadhadidi/summeries/blob/master/Compilers/DFx2.jpg)
 
+So we find DF&#8734; for all basic blocks that a variable is defined, and then
+insert the &#934; functions there.
+
 ### Data Flow optimizations with SSA
 
 #### Dead Code Elimination
