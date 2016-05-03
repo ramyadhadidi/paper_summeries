@@ -12,14 +12,14 @@
 		- [Back-edges](#back-edges)
 	- [Regions](#regions)
 	- [Flow Analysis](#flow-analysis)
-				- [Live Variable Analysis (Backward, union, ref->live def-> dead)](#live-variable-analysis-backward-union-ref-live-def-dead)
-				- [Available Expression (Forward, intersection, gen->available kill->)](#available-expression-forward-intersection-gen-available-kill-)
-				- [Very Busy Expressions (Backward, intersection)](#very-busy-expressions-backward-intersection)
-				- [Postponable Expressions (Forward, intersection)](#postponable-expressions-forward-intersection)
-				- [Reaching Definition (Forward, union)](#reaching-definition-forward-union)
-				- [D-U and U-D chains (Use-Def, Def-Use)](#d-u-and-u-d-chains-use-def-def-use)
-				- [Strength reduction](#strength-reduction)
-				- [Induction Variables](#induction-variables)
+		- [Live Variable Analysis](#live-variable-analysis)
+		- [Available Expression](#available-expression)
+		- [Very Busy Expressions](#very-busy-expressions)
+		- [Postponable Expressions](#postponable-expressions)
+		- [Reaching Definition](#reaching-definition)
+		- [D-U and U-D chains](#d-u-and-u-d-chains)
+		- [Strength reduction](#strength-reduction)
+		- [Induction Variables](#induction-variables)
 	- [Partial-Redundancy Elimination (PRE)](#partial-redundancy-elimination-pre)
 		- [Loop Invariant Statements](#loop-invariant-statements)
 			- [Loop Invariant Code Motion](#loop-invariant-code-motion)
@@ -163,7 +163,8 @@ A loop is a special region that has the following additional properties:
 __Code optimization__: a program transformation that preserves correctness and improves performance.
 it may be performed on different levels: source code, IR, target machine code
 
-##### Live Variable Analysis (Backward, union, ref->live def-> dead)
+### Live Variable Analysis
+(Backward, union, ref->live def-> dead)
 - Dead code elimination, uninitialized variables, register and memory allocation
 - sem-live(n) ⊆ syn-live(n)
  - syntactic methods will overestimate liveness for safely
@@ -171,29 +172,35 @@ it may be performed on different levels: source code, IR, target machine code
 
 ![live](https://github.com/ramyadhadidi/summeries/blob/master/Compilers/live.jpg)
 
-##### Available Expression (Forward, intersection, gen->available kill->)
+### Available Expression
+(Forward, intersection, gen->available kill->)
 - Redundant computation, CSE (common subexpression elimination)
 - sem-avail(n) ⊇ syn-avail(n)
 	- e.g. could always take one of the two if statements
 
 ![aexp](https://github.com/ramyadhadidi/summeries/blob/master/Compilers/aexp.jpg)
 
-##### Very Busy Expressions (Backward, intersection)
+### Very Busy Expressions
+(Backward, intersection)
 - Lazy code motion, code hoisting
 
-##### Postponable Expressions (Forward, intersection)
+
+### Postponable Expressions
+(Forward, intersection)
 - Lazy code motion
 
-##### Reaching Definition (Forward, union)
+### Reaching Definition
+(Forward, union)
 - Constant Folding, Constant Porpagation
 
-##### D-U and U-D chains (Use-Def, Def-Use)
+### D-U and U-D chains
+(Use-Def, Def-Use)
 No needed when using SSA form
 
-##### Strength reduction
+### Strength reduction
 Replace expensive operations with cheaper ones.
 
-##### Induction Variables
+### Induction Variables
 A induction variable is a variable if there is constant c such that each time x is assigned its value increases by c.
 ```
 j=j-1
