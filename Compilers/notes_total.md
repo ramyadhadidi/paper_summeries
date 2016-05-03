@@ -43,6 +43,12 @@
 			- [Loop Dependency](#loop-dependency)
 				- [Terms and Theory](#terms-and-theory)
 				- [Dependence Testing](#dependence-testing)
+					- [Dependence Testing steps](#dependence-testing-steps)
+					- [ZIV Test](#ziv-test)
+					- [Strong SIV Test](#strong-siv-test)
+					- [Weak-Zero SIV Test](#weak-zero-siv-test)
+					- [GCD Test](#gcd-test)
+					- [Banerjee Test](#banerjee-test)
 
 <!-- /TOC -->
 
@@ -392,12 +398,14 @@ i and j such that i<j and they access same memory locations which at least one o
 We can reorder a loop as long as we preserves all dependencies.
 
 Type of loop dependencies:
+
 1. Loop-Independent: dependency exist but for iteration vector i=j
 2. Loop-Carried: different iteration vectors. S1 depends on S2.
 	- Forward: S2 appears after S1
 	- Backward: S2 appears before S1 (or if S1=S2)
 
 ##### Terms and Theory
+
 - _Iteration Vector_
 - _Dependence Distance Vector_: From S1 to S2; d(i,j) = j - i
 - _Dependence Direction Vector_: (<,=,>) :: source ? sink :: actually the sign of Distance Vector
@@ -416,3 +424,49 @@ Preserving Loop-Independent dependence:
  - A transform preserves the dependency if does not move instances between iterations, and relative order of statements.
 
 ##### Dependence Testing
+Test whether dependence exist between two subscripted reference to same array or not.
+
+Dependence testing assumes that we normalized iteration space, constant propagation ,
+dead code elimination and induction variable substitution.
+
+Two kind of test:
+- conservative: if says there is not a dependency it is true, however, when it says there is a dependency it might not be a dependency.
+- exact: find exactly if a dependency exists or not.
+
+We can just test linear expressions for testing, no unknown or symbolic variables.
+
+Type of indexes (number of subscripts in an index pair):
+- ZIV (zero index variable)
+- SIV (single index variable)
+- MIV (multiple index variable)
+
+if indexes do not occuer in other subscripts they are __separable__ else they are __coupled__.
+ZIV and SIV pairs are usually separable, however MIV are not which makes them harder to test.
+
+###### Dependence Testing steps
+
+1. _Partition_ subscripts into separable and coupled groups.
+2. Classify them as ZIV, SIV or MIV.
+3. Perform appropriate test, if independence is proved exit.
+4. Else, test for multiple subscripts tests, if independence proved exit.
+5. Else, merge all dependence vector.
+
+###### ZIV Test
+If two subscripts are not equal, independence is proved. No further tests. Also, this test does
+not provde direction vector (\*)
+
+###### Strong SIV Test
+coefficients of the index are equal: __<ai+c1, ai'+c2>__.
+
+It has and answer (dependence exists) if __|d| &#8804; U - L__, Where __d = (c1 - c2) / a__.
+
+###### Weak-Zero SIV Test
+coefficients of the index with either a1=0 or a2=0: __<a1i+c1, a2i'+c2>__.
+
+Then we can solve for i, and if __L &#8804; I &#8804; U__ the equation has an answer.
+
+###### GCD Test
+gcd of all coefficients should devide to b0-a0. If yes, there exists a solution in Real Numbers (R).
+This is a conservative solution.
+
+###### Banerjee Test
