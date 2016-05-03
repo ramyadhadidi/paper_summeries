@@ -166,12 +166,17 @@ it may be performed on different levels: source code, IR, target machine code
 ##### Live Variable Analysis (Backward, union, ref->live def-> dead)
 - Dead code elimination, uninitialized variables, register and memory allocation
 - sem-live(n) ⊆ syn-live(n)
-- in-live(n) =  out-live(n) \ def (n)  ∪ ref (n)
+ - syntactic methods will overestimate liveness for safely
+ - e.g. two if statements that one of them will be true and they define t.
+
+![live](https://github.com/ramyadhadidi/summeries/blob/master/Compilers/live.jpg)
 
 ##### Available Expression (Forward, intersection, gen->available kill->)
 - Redundant computation, CSE (common subexpression elimination)
 - sem-avail(n) ⊇ syn-avail(n)
-- out-avail(n) =  in-avail(n) ∪ gen(n)  \ kill(n)
+	- e.g. could always take one of the two if statements
+
+![aexp](https://github.com/ramyadhadidi/summeries/blob/master/Compilers/aexp.jpg)
 
 ##### Very Busy Expressions (Backward, intersection)
 - Lazy code motion, code hoisting
