@@ -1,6 +1,7 @@
 <!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
 - [Compiler Notes](#compiler-notes)
+	- [IR Generation](#ir-generation)
 	- [Basic blocks](#basic-blocks)
 		- [Extended Basic Block](#extended-basic-block)
 		- [DAG representation](#dag-representation)
@@ -34,6 +35,7 @@
 	- [Value Numbering](#value-numbering)
 		- [Local Value Numbering](#local-value-numbering)
 		- [Global Value Numbering (GVN)](#global-value-numbering-gvn)
+	- [Loop Restructuring](#loop-restructuring)
 	- [Register Allocation](#register-allocation)
 		- [Webs](#webs)
 		- [Graph Coloring](#graph-coloring)
@@ -57,11 +59,21 @@
 					- [Weak-Zero SIV Test](#weak-zero-siv-test)
 					- [GCD Test](#gcd-test)
 					- [Banerjee Test](#banerjee-test)
+
 <!-- /TOC -->
 
 
 
 # Compiler Notes
+
+## IR Generation
+Types of IR:
+	- Structural (Trees, DAG)
+	- Linear (3 address code, stack machine code)
+	- Hybrid (CFG)
+
+Short Circuiting: while generating code for || or && if one of them is constant, ignore
+based on operand type.
 
 <!-- **************************************************************************** -->
 ## Basic blocks
