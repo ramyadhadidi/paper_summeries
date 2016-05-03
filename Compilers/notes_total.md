@@ -35,7 +35,15 @@
 		- [Local Value Numbering](#local-value-numbering)
 		- [Global Value Numbering (GVN)](#global-value-numbering-gvn)
 	- [Register Allocation](#register-allocation)
-		- [Spilling](#spilling)
+		- [Webs](#webs)
+		- [Graph Coloring](#graph-coloring)
+			- [Spilling](#spilling)
+			- [Register Allocation Optimizations](#register-allocation-optimizations)
+				- [Splitting](#splitting)
+				- [Coalescing](#coalescing)
+				- [Register Targeting](#register-targeting)
+				- [Pre-Splitting](#pre-splitting)
+				- [Interprocedural register allocation](#interprocedural-register-allocation)
 	- [Dependency](#dependency)
 		- [Data Dependency](#data-dependency)
 			- [Classification](#classification)
@@ -339,19 +347,39 @@ Two values are equivalent iff at point P:
 
 <!-- **************************************************************************** -->
 ## Register Allocation
-SSA form or any IR uses many temporaries to hold variables. This make optimizations easier. However, for code generation
-we might have lesser registers than our temporaries number. Here, register allocation problem arises.
+SSA form or any IR uses many temporaries to hold variables. This make optimizations easier.
+However, for code generation
+we might have lesser registers than our temporaries number. Here, register
+allocation problem arises.
 
-To solve this, we use liveness analysis. The basic idea is that t1 and t2, if they are live at the same time, they cannot
-use same register. With this constraint, we build a register interference graph (__RIG__). Vertices represent variables and
+To solve this, we use liveness analysis. The basic idea is that t1 and t2, if they are
+live at the same time, they cannot
+use same register. With this constraint, we build a register interference graph
+(__RIG__). Vertices represent variables and
 edges represent those variables that are live at the same time.
 
-To solve the problem, we can translate this to graph coloring problem. Where we find the minimum number of colors to color
+### Webs
+Starting Point: def-use chains (DU chains)
+- Connects definition to all reachable uses.
+
+Conditions for putting defs and uses into same web
+- Def and all reachable uses must be in same web
+- All defs that reach same use must be in same web
+
+Uses of webs make everything easier. First to du-chains by computing reaching definitions, then
+compute maximal unions of intersection du-chanis. (each web is allocated to a register)
+
+### Graph Coloring
+To solve the problem, we can translate RIG to a graph coloring problem.
+Where we find the minimum number of colors to color
 the vertices so that no neighbor vertices are not the same color. (NP-hard)
 
 Heuristic solution: consider we have k register.
 - First Part:
   - pick a node t with less than k neighbor
+	- if all nodes have equal or more than k neighbor
+		- find a node with least spill cost (see [Spilling](#spilling))
+		- push it to stack; continue
   - push it to stack
   - remove it with its neighbor from RIG
   - do until graph is empty
@@ -360,13 +388,51 @@ Heuristic solution: consider we have k register.
   - color it so no neighbors are with same color
   - pop until the stack is empty
 
-### Spilling
+#### Spilling
 If we cannot use k registers to hold all values, we use memory.
 When:
 - All the nodes have k or more neighbor
   - If we remove the first node, all the nodes has k neighbors
 
 We remove one node that has more than k neighbors, and save it to memory. Then try to allocate registers.
+
+#### Register Allocation Optimizations
+
+##### Splitting
+When coloring fails, there are two options:
+- spill (we talked)
+- split the web that spills into multiple webs
+
+How to choose:
+- degree &#8805; k
+- with minimal spilling cost
+	- load and stores has more cost (10x) to power of loop depth
+	- sum this for all defs and uses
+
+So, split the web to reduce the degree. Then, at the point of split, spill to memory.
+
+##### Coalescing
+- Find register copy instructions sj = si
+- If sj and si do not interfere, combine their webs
+
+Pros:
+- reduces number of instructions
+
+Cons:
+- may increase degree, so a colorable graph may become non-colorable
+
+##### Register Targeting
+ - Some variables need to be in special registers at a given time
+ - So pre-color them first
+
+##### Pre-Splitting
+- Some live ranges have very large “dead” regions
+- Find strategic locations to break-up (call sites, around loop to free registers)
+
+##### Interprocedural register allocation
+- Customize calling convention per function by doing interprocedural register allocation
+- So less stack work and less memory load/store
+
 
 <!-- **************************************************************************** -->
 ## Dependency
@@ -466,7 +532,13 @@ coefficients of the index with either a1=0 or a2=0: __<a1i+c1, a2i'+c2>__.
 Then we can solve for i, and if __L &#8804; I &#8804; U__ the equation has an answer.
 
 ###### GCD Test
-gcd of all coefficients should devide to b0-a0. If yes, there exists a solution in Real Numbers (R).
+gcd of all coefficients should divide to b0-a0. If yes, there exists a solution in Real Numbers (R).
 This is a conservative solution.
 
+__(b0 - a0) / gcd(a1,a2,...,b1,b2,...)__ should have answer in Z.
+
 ###### Banerjee Test
+f(a) - g(b) = 0 is the equation, find the minimum and maximum of it based on bounds. Then, if 0 is
+not within the bound between minimum and maximum, then it has no solution.
+
+or __minR h &#8804; 0 &#8804; maxR h__
