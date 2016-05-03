@@ -57,7 +57,6 @@
 					- [Weak-Zero SIV Test](#weak-zero-siv-test)
 					- [GCD Test](#gcd-test)
 					- [Banerjee Test](#banerjee-test)
-
 <!-- /TOC -->
 
 
@@ -344,6 +343,42 @@ Two values are equivalent iff at point P:
 - they are congruent
 - their defining assignments dominate P
 
+
+<!-- **************************************************************************** -->
+## Loop Restructuring
+- Unswitching
+	- remove loop independent conditionals from a loop
+- Peeling
+	- remove first (last) iteration of the loop
+	- enables loop fusion
+- Index Set Splitting
+	- can remove conditionals from loop
+	- enables loop fusion
+- Scaler Exapnsion
+	- eliminates anti and output dependence
+	- loop must be countable
+- Loop Fusion
+	- Take two adjacent loops and create one
+	- But should preserves dependence relations
+	- Easy for data independent loops
+	- For data dependent loops
+		- should iterate same number of times
+		- they are adjacent or can be
+		- compiler must be able to use same induction variable
+- Loop Fission
+	- break a loop into two loops
+	- it can improve cache
+	- it can enable other transformation
+- Loop Reversal
+	- run a loop backward
+	- legal for the loops that have no loop carried dependencies
+- Loop Interchanging
+	- reverse the nesting order
+- Loop Skewing
+	- Unnormalize iteration vectors to enable loop Interchanging
+- Strip Mining
+	- Decompose a loop in two nested loop for vector processors
+- Loop Tiling
 
 <!-- **************************************************************************** -->
 ## Register Allocation
