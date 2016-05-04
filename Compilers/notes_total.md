@@ -326,6 +326,10 @@ In summery these are the steps:
 - uses post-dominator to rewrite branches
 - uses RDF to mark block-ending branch
 
+#### Constant Propagation
+
+#### Available Expression (CSE)
+
 <!-- **************************************************************************** -->
 ## Value Numbering
 Give numbers to symbolic values, find equal expressions.
@@ -601,3 +605,5 @@ f(a) - g(b) = 0 is the equation, find the minimum and maximum of it based on bou
 not within the bound between minimum and maximum, then it has no solution.
 
 or __minR h &#8804; 0 &#8804; maxR h__
+
+###### I-Test
