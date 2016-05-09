@@ -209,6 +209,9 @@ Speedup = n / (1+stall)
  - Load-use hazard (load x and the use it, common)
 
 ### Solve Control Hazards
+- Delay Slot (move instruction from before a branch to after it)
+	- hard to find more than 2 instructions
+- Squash Slots (use instructions from target or fall-throught)
 - Branch Target Buffer
 - 2bit predictor (Smith, biomodal)
 - GShare (2Mux one for History, one for PC)
