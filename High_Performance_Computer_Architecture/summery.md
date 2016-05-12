@@ -6,6 +6,7 @@
 		- [Amdahl's Law](#amdahls-law)
 		- [Gustafson's Law](#gustafsons-law)
 		- [Moor's Law](#moors-law)
+		- [Dennard scaling](#dennard-scaling)
 - [N3: Memory Hierarchies and Caches](#n3-memory-hierarchies-and-caches)
 	- [Caches](#caches)
 		- [Cache Timing](#cache-timing)
@@ -113,6 +114,21 @@ Looks from other perspective, parallel programs. (Must keep CPUs busy)
 
 ### Moor's Law
 2x Transistors / 18 Month
+
+### Dennard Scaling
+Dennard (1974) observed that voltage
+and current should be proportional to
+the linear dimensions of a transistor.
+Thus, as transistors shrank, so did
+necessary voltage and current.
+So, as the size of the transistors
+shrunk, and the voltage was reduced,
+circuits could operate at higher
+frequencies at the same power.
+
+Dennard scaling ignored the
+“leakage current” and “threshold
+voltage” -> power wall
 
 
 <!-- --------------------------------------------- -->
