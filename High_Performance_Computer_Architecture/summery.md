@@ -141,7 +141,7 @@ Locality:
 ## Caches
 (C,B,S) = 2^C bytes cache, 2^B bytes blocks, 2^S sets
 
-- Fully Associative
+- Fully Associative (Content Addressable Memory (CAM))
   - Checks all the tags
 - Direct Mapped (S=0)
   - Just checks one tag
