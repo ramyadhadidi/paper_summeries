@@ -110,7 +110,7 @@ Looks from other perspective, parallel programs. (Must keep CPUs busy)
 - a: Fraction of parallel program that is sequential
 - P: P processors
 
-- SpeedUp = P - a(P-1)
+- SpeedUp = P - a(P-1) = P - (1-F)(P-1)
 
 ### Moor's Law
 2x Transistors / 18 Month
