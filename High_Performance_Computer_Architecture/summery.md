@@ -6,6 +6,7 @@
 		- [Amdahl's Law](#amdahls-law)
 		- [Gustafson's Law](#gustafsons-law)
 		- [Moor's Law](#moors-law)
+		- [Dennard scaling](#dennard-scaling)
 - [N3: Memory Hierarchies and Caches](#n3-memory-hierarchies-and-caches)
 	- [Caches](#caches)
 		- [Cache Timing](#cache-timing)
@@ -109,10 +110,25 @@ Looks from other perspective, parallel programs. (Must keep CPUs busy)
 - a: Fraction of parallel program that is sequential
 - P: P processors
 
-- SpeedUp = P - a(P-1)
+- SpeedUp = P - a(P-1) = P - (1-F)(P-1)
 
 ### Moor's Law
 2x Transistors / 18 Month
+
+### Dennard Scaling
+Dennard (1974) observed that voltage
+and current should be proportional to
+the linear dimensions of a transistor.
+Thus, as transistors shrank, so did
+necessary voltage and current.
+So, as the size of the transistors
+shrunk, and the voltage was reduced,
+circuits could operate at higher
+frequencies at the same power.
+
+Dennard scaling ignored the
+“leakage current” and “threshold
+voltage” -> power wall
 
 
 <!-- --------------------------------------------- -->
@@ -125,7 +141,7 @@ Locality:
 ## Caches
 (C,B,S) = 2^C bytes cache, 2^B bytes blocks, 2^S sets
 
-- Fully Associative
+- Fully Associative (Content Addressable Memory (CAM))
   - Checks all the tags
 - Direct Mapped (S=0)
   - Just checks one tag
@@ -209,6 +225,9 @@ Speedup = n / (1+stall)
  - Load-use hazard (load x and the use it, common)
 
 ### Solve Control Hazards
+- Delay Slot (move instruction from before a branch to after it)
+	- hard to find more than 2 instructions
+- Squash Slots (use instructions from target or fall-throught)
 - Branch Target Buffer
 - 2bit predictor (Smith, biomodal)
 - GShare (2Mux one for History, one for PC)
