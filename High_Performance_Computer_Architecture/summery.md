@@ -230,8 +230,8 @@ Speedup = n / (1+stall)
 - Squash Slots (use instructions from target or fall-throught)
 - Branch Target Buffer
 - 2bit predictor (Smith, biomodal)
-- GShare (2Mux one for History, one for PC)
-- GSelect (1Mux hash history and PC)
+- GSelect (2Mux one for History, one for PC)
+- GShare (1Mux hash history and PC)
 - Yeh/Patt (History table for each PC selects pattern table entry)
 - Hybrid (Competition)
 
